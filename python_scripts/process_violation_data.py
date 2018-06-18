@@ -2,6 +2,8 @@ import json
 
 count = 0
 
+# Adds the Coordinates to the data
+
 def lot_and_block_match(lot, block, block_list):
   block_match = next((b for b in block_list if block == b["Block"]), False)
   if block_match == False:

@@ -1,6 +1,7 @@
 import json
 import csv
 import pandas as pd
+import math
 from shapely.geometry import shape, Point
 
 def add_neighborhood_property_to_feature(feature, neighborhood_json):
@@ -75,13 +76,46 @@ def add_median_income_to_census_tracts():
     if len(match) == 0:
       print("  * could not match tract: " + tract["properties"]["CT2010"])
     else:
-      tract["properties"]["median_income_2010"] = match[1] 
-      tract["properties"]["median_income_2017"] = match[2] 
-      print("  * match found: " + tract["properties"]["CT2010"])
+      if math.isnan(match[1]) or math.isnan(match[2]):
+        tract["properties"]["median_income_2010"] = None
+        tract["properties"]["median_income_2017"] = None 
+      else:
+        tract["properties"]["median_income_2010"] = match[1] 
+        tract["properties"]["median_income_2017"] = match[2] 
+        print("  * match found: " + tract["properties"]["CT2010"])
 
   with open("data/boundary_data/census_tracts/bk_census_tracts_2010.geojson", "w") as new_tract_data:
       json.dump(tract_json, new_tract_data, sort_keys=True, indent=2)
 
-  print(tract_json["features"][0])
+def add_computed_violation_data_to_census_tracts():
+  tract_json = {}
+  violations_data = []
 
-def add_properties_to_neighborhood_from_census_tract():
+  with open("data/boundary_data/census_tracts/bk_census_tracts_2010.geojson") as tract_data:
+    tract_json = json.load(tract_data)
+    print("Tract json loaded")
+
+  violation_csv = pd.read_csv("data/violations_data/bk_census_tract_violations_by_year.csv", sep=',',header=None)
+
+  for tract in violation_csv.values:
+    violations_data.append(tract)
+
+  violations_data.pop(0)
+
+  for tract in tract_json["features"]:
+    print(violations_data[0])
+    match = next((entry for entry in violations_data if entry[0] == tract["properties"]["CTLabel"]), []) 
+    if len(match) <= 0:
+      print("  * could not match tract: " + tract["properties"]["CTLabel"])
+    else:
+      tract["2017"] = {} 
+      tract["2017"]["violationsPerBuilding"] = match[12]
+      tract["2017"]["totalBuildings"] = match[9]
+      print("  * match found: " + tract["properties"]["CTLabel"])
+
+  with open("data/boundary_data/census_tracts/bk_census_tracts_2010.geojson", "w") as new_tract_data:
+      print("Writing JSON")
+      json.dump(tract_json, new_tract_data, sort_keys=True, indent=2)
+
+
+

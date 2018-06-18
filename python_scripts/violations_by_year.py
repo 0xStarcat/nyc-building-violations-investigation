@@ -11,6 +11,10 @@ years_found = []
 
 buildings_data = []
 
+# Creates data files splitting all the data by boundary and year 
+# includes columns for 
+# Total Buildings
+# 
 
 def create_or_append_to_boundary_list(violation, boundary_key, date_key):
   if boundary_key in violation["properties"]:
@@ -55,18 +59,18 @@ def generate_year_headers():
   average_years = []
   violations_per_bldg = []
 
-  for year in years_found:
+  for year in sorted(years_found):
     total_years.append(year + " total")
     average_years.append(year + " avg/month")
     violations_per_bldg.append(year + " violation per bldg")
   return total_years + average_years + ["buildings"] + violations_per_bldg
 
-def generate_row(boundary, boundary_key, boundary_index):
+def generate_row(boundary, boundary_key):
   row = []
   total_violation_by_year = []
   average_violation_per_month = []
   violations_per_building = []
-  for index, year in enumerate(years_found):
+  for year in sorted(years_found):
     total_violation_by_year.append(str(len(boundary["violations"][year]))) if year in boundary["violations"] else total_violation_by_year.append("0")
     average_violation_per_month.append(calculate_average_for_year(boundary["violations"][year], year)) if year in boundary["violations"] else average_violation_per_month.append("0")
     violations_per_building.append(calculate_violations_per_building(len(boundary["violations"][year]), match_neighborhood_to_building_num(boundary, boundary_key), year)) if year in boundary["violations"] else violations_per_building.append("0")
@@ -104,9 +108,35 @@ def write_csv(dest_file, boundary_key):
     print("writing to CSV")
     writer = csv.writer(outcsv)
     writer.writerow([boundary_key] + generate_year_headers())
-    for index, boundary in enumerate(sorted(boundary_list, key=sort_by_key)):
+    for boundary in sorted(boundary_list, key=sort_by_key):
       if boundary[boundary_key] != "" and boundary_key in boundary:
-        writer.writerow(generate_row(boundary, boundary_key, index))
+        writer.writerow(generate_row(boundary, boundary_key))
+
+def add_json_keys(boundary, boundary_key):
+  boundary["2010_buildings"] = None
+  boundary["2017_buildings"] = match_neighborhood_to_building_num(boundary, boundary_key)
+  
+  for year in sorted(years_found):
+    if year in boundary:
+      boundary[year]["violationsPerBuilding"] = calculate_violations_per_building(len(boundary["violations"][year]), match_neighborhood_to_building_num(boundary, boundary_key), year) if year in boundary["violations"] else "0"
+    else:
+      boundary[year] = {}
+      boundary[year]["violationsPerBuilding"] = calculate_violations_per_building(len(boundary["violations"][year]), match_neighborhood_to_building_num(boundary, boundary_key), year) if year in boundary["violations"] else "0"
+
+def write_json(dest_file, boundary_key):
+  with open(dest_file + '.json', 'w') as out_json:
+    print("writing to JSON")
+    out_boundary_list = boundary_list
+
+    for boundary in out_boundary_list:
+      add_json_keys(boundary, boundary_key)
+
+    data = {
+      boundary_key: boundary_list
+    }
+
+    json.dump(data, out_json, sort_keys=True, indent=2)
+
 
 def process_data(source_file, dest_file, boundary_key, date_key):
   with open(source_file) as violations_data:
@@ -119,6 +149,7 @@ def process_data(source_file, dest_file, boundary_key, date_key):
       process_count += 1
 
   write_csv(dest_file, boundary_key)
+  write_json(dest_file, boundary_key)
 
 def process_neighborhood_data(source_file, dest_file, boundary_key, date_key):
   buildings_csv=pd.read_csv('data/buildings_data/bk_buildings_by_neighborhood_totals.csv', sep=',',header=None)  

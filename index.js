@@ -24,6 +24,14 @@ app.get('/boundaries/:type/:fileName', function(req, res) {
     });
 })
 
+app.get('/violations/:fileName', function(req, res) {
+  var file = './data/violations_data/' + req.params["fileName"] + '.json'
+  fs.readFile(file, function(err, content){
+        res.write(content);
+        res.end();
+    });
+})
+
 //Start the server on the defined port
 app.listen(port, function()
 {

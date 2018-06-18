@@ -1,4 +1,5 @@
 import { fetchData } from './fetchData'
+import { styleIncomeLayers } from './geojsonHelpers.js'
 import Store from './store'
 
 /* eslint-disable */
@@ -15,8 +16,10 @@ setTimeout(() => map.invalidateSize(), 1)
 
 fetchData()
   .then(() => {
-    console.log(Store.boundaryData.neighborhoods)
+    console.log("fetch complete")
     setupGeoJsonBoundaries()
+    // setupViolationPoints("2015")
+    console.log("setup complete")
   })
   .catch(error => {
     console.log("error ", error)
@@ -25,7 +28,7 @@ fetchData()
 const geojsonMarkerOptions = {
   radius: 1,
   fillColor: "hotpink",
-  color: "#000",
+  color: "hotpink",
   weight: 1,
   opacity: 1,
   fillOpacity: 0.8
@@ -34,28 +37,95 @@ const geojsonMarkerOptions = {
 
 const setupGeoJsonBoundaries = () => {
   L.geoJSON(Store.boundaryData.censusTracts, {
-    onEachFeature: onNeighborhoodFeatureEach
+    onEachFeature: onCensusTractFeatureEach,
+    style: styleIncomeLayers
   }).addTo(map)
 
-  // L.geoJSON(violation_data, {
-  //   pointToLayer: function (feature, latlng) {
-  //         return L.circleMarker(latlng, geojsonMarkerOptions);
-  //     },
-  //   onEachFeature: onViolationEachFeature
-  // }).addTo(map);
+  L.geoJSON(Store.boundaryData.neighborhoods, {
+    onEachFeature: onNeighborhoodFeatureEach,
+    interactive: false,
+    style: {
+      weight: "1.5",
+      color: "#e10033",
+      fillOpacity: 0
+    }
+  }).addTo(map)
+}
+
+const setupViolationPoints = year => {
+  let filtered_data = Store.violationData
+  filtered_data.features = Store.violationData.features.filter((feature) => feature["properties"]["issue_date"].substring(0, 4) === year)
+  L.geoJSON(filtered_data, {
+    pointToLayer: (feature, latlng) => {
+          return L.circleMarker(latlng, geojsonMarkerOptions);
+      },
+    onEachFeature: onViolationEachFeature,
+  }).addTo(map);
+}
+
+function onCensusTractFeatureEach(feature, layer) {
+  layer.on({
+    click: onCensusTractClick,
+    mouseover: onCensusTrackMouseover,
+    mouseout: onCensusTractMouseout
+  })
+}
+
+const onCensusTractMouseout = e => {
+  // e.target.closeTooltip();
+}
+
+const onCensusTrackMouseover = e => {
+  e.target.bindTooltip('Neighborhood: ' + e.target.feature.properties.neighborhood, {permanent: false, interactive: false, sticky: false, offset: [0, -50], direction: "top"}, e.target).openTooltip();
+}
+
+function onCensusTractClick(e) {
+
+
+  // debugger
+  let median_income_2010 = String(Math.round(e.target.feature.properties.median_income_2010))
+  let median_income_2017 = String(Math.round(e.target.feature.properties.median_income_2017))
+  console.log(e.target.feature.properties)
+  const t = L.tooltip({permanent: false, interactive:true, sticky: false}, e.target).setLatLng(e.latlng)
+                                                                  .setContent('Census Tract: ' + e.target.feature.properties.CT2010 + '<br/>' + 'Median Income 2010: ' + median_income_2010 + 
+                                                                    '<br/>' + 
+                                                                    'Median Income 2017: ' + median_income_2017
+
+                                                                    )
+                                                                  .addTo(map);
+  //   L.tooltip({
+  //   offset: e.latlng,
+  //   direction: 'auto'
+
+
+  // }, layer).openTooltip()
+  // L.popup()
+  //   .setLatLng(e.latlng)
+  //   .setContent(String(median_income_2017))
+  //   .openOn(map);
 }
 
 function onNeighborhoodFeatureEach(feature, layer) {
   layer.on({
-    click: onNeighborhoodClick
+    mouseover: onNeighborhoodMouseover
   })
 }
 
 function onViolationEachFeature(feature, layer) {
   layer.on({
-        click: onViolationClick
-    });
+    click: onViolationClick
+  });
 }
+
+const onNeighborhoodMouseover = e => {
+  console.log(e)
+  e.target.options = {
+    color: "red",
+    weight: "4",
+    fillColor: "purple",
+    onEachFeature: e.target.options.onEachFeature
+  }
+} 
 
 function onNeighborhoodClick(e, layer) {
   L.popup()

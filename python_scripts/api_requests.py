@@ -13,11 +13,11 @@ import boundary_helpers
   # "ES" (electric sign, probably business)
 all_data = []
 
-dob_url = 'https://data.cityofnewyork.us/resource/dvnq-fhaa.json?boro=3&$where=issue_date between "20170101" and "20190102" AND violation_type_code not in("C", "E", "LL5", "LL5/73", "ES")&'
+dob_url = 'https://data.cityofnewyork.us/resource/dvnq-fhaa.json?boro=3&$where=issue_date between "20150101" and "20190102" AND violation_type_code not in("C", "E", "LL5", "LL5/73", "ES")&'
 
 # violation_type is not "Site Safety, Elevator"
   # "OPERATION OF A PLACE OF ASSEMBLY W/O A CURRENT CERTIFICATE OF OCCUANCY.OBSERED:A78 SEAT CHURCH W. SOUND SYSTEM AND MUSICAL INSTRUMENTS FOR ALIVE BEND @EXTENSION @REAR OF FIRST FLR, W/O A CURRENT CERTIFICATE OF" was filed under "Construction"
-ecb_url = 'https://data.cityofnewyork.us/resource/gq3f-5jm8.json?boro=3&$where=issue_date between "20170101" and "20190102" AND violation_type not in("Site Safety", "Elevators")&'
+ecb_url = 'https://data.cityofnewyork.us/resource/gq3f-5jm8.json?boro=3&$where=issue_date between "20150101" and "20190102" AND violation_type not in("Site Safety", "Elevators")&'
 
 def request_from_api(url):
   print(url)

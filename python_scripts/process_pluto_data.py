@@ -241,8 +241,3 @@ def process_map_pluto():
 # Count neighborhoods
 # count_features_by_key.count_by_key("data/buildings_data/processed_mappluto.geojson", "data/buildings_data/bk_buildings_by_neighborhood", "neighborhood")
 
-
-# Count # of buildings by neighborhood and write to CSV
-# count_features_by_boundary.count_objects_by_boundary("data/buildings_data/processed_mappluto.geojson", "data/boundary_data/census_tracts/bk_census_tracts_2010.geojson", "CTLabel", "data/buildings_data/bk_residential_buildings_by_census_tract", True)
-
-# count_features_by_boundary.count_objects_by_boundary("data/buildings_data/processed_mappluto.geojson", "data/boundary_data/neighborhoods/bk_neighborhoods.geojson", "neighborhood", "data/buildings_data/bk_residential_buildings_by_neighborhood", True)

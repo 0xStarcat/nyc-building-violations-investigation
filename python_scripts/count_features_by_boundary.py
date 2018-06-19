@@ -93,4 +93,4 @@ def count_objects_by_boundary(features_file, boundaries_file, boundary_key, outp
         return counts
 
 
-# count_objects_by_boundary("data/violations_data/nyc_violation_data_geo.geojson", "data/boundary_data/neighborhoods/bk_neighborhoods.geojson", "neighborhood", "data/violations_data/violations_by_neighborhoods_count", True)
+# count_objects_by_boundary("data/violations_data/nyc_violation_data_geo.geojson", "data/boundary_data/geojson/bk_neighborhoods.geojson", "neighborhood", "data/violations_data/violations_by_neighborhoods_count", True)

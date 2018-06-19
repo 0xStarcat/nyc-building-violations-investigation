@@ -18,7 +18,7 @@ def lot_and_block_match(lot, block, block_list):
       return lot_match
 
 with open("data/violations_data/nyc_dob_data.json") as dob_data_json:
-  with open("data/buildings_data/bk_buildings_by_block.json") as block_json:
+  with open("data/buildings_data/json/bk_buildings_by_block.json") as block_json:
     block_data = json.load(block_json)
     print("Block file loaded")
     violation_data = json.load(dob_data_json)
@@ -90,10 +90,10 @@ with open("data/violations_data/nyc_dob_data.json") as dob_data_json:
 
 
 
-    with open("data/violations_data/bk_nyc_dob_violation_data.json", "w") as violation_geo_data:
+    with open("data/violations_data/json/bk_nyc_dob_violation_data.json", "w") as violation_geo_data:
       print("Writing property data: " + str(len(new_data["features"])) + " to file.")
       json.dump(new_data, violation_geo_data, sort_keys=True, indent=2)
 
-    with open("data/violations_data/bk_nyc_dob_violation_data.geojson", "w") as violation_geo_data:
+    with open("data/violations_data/geojson/bk_nyc_dob_violation_data.geojson", "w") as violation_geo_data:
       print("Writing geo data: " + str(len(new_geo_data["features"])) + " to file.")
       json.dump(new_geo_data, violation_geo_data, sort_keys=True, indent=2)

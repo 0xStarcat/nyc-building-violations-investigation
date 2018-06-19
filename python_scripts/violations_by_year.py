@@ -2,6 +2,8 @@ import csv
 import json
 import datetime
 import pandas as pd
+from csv_generators import bk_census_tract_violations_by_year
+from csv_generators import bk_neighborhood_violations_by_year
 
 now = datetime.datetime.now()
 percent_year_complete = (now.timetuple().tm_yday / 365)
@@ -54,91 +56,7 @@ def push_year_found(year):
   else:
     years_found.append(year)
 
-def generate_year_headers():
-  total_years = []
-  average_years = []
-  violations_per_bldg = []
-
-  for year in sorted(years_found):
-    total_years.append(year + " total")
-    average_years.append(year + " avg/month")
-    violations_per_bldg.append(year + " violation per bldg")
-  return total_years + average_years + ["buildings"] + violations_per_bldg
-
-def generate_row(boundary, boundary_key):
-  row = []
-  total_violation_by_year = []
-  average_violation_per_month = []
-  violations_per_building = []
-  for year in sorted(years_found):
-    total_violation_by_year.append(str(len(boundary["violations"][year]))) if year in boundary["violations"] else total_violation_by_year.append("0")
-    average_violation_per_month.append(calculate_average_for_year(boundary["violations"][year], year)) if year in boundary["violations"] else average_violation_per_month.append("0")
-    violations_per_building.append(calculate_violations_per_building(len(boundary["violations"][year]), match_neighborhood_to_building_num(boundary, boundary_key), year)) if year in boundary["violations"] else violations_per_building.append("0")
-
-  return [boundary[boundary_key]] + total_violation_by_year + average_violation_per_month + [match_neighborhood_to_building_num(boundary, boundary_key)] + violations_per_building
-
-def match_neighborhood_to_building_num(boundary, boundary_key):
-  match = next((neighborhood for neighborhood in buildings_data if neighborhood[0] == boundary[boundary_key]), [])
-
-  if len(match) > 0:
-    return match[1]
-  else: 
-    print("  * couldn't match neighborhood to building data. please check! : " + boundary[boundary_key])
-
-def calculate_average_for_year(violations, year):
-  if int(now.year) == int(year):
-    return round((len(violations) / percent_year_complete) / 12, 2)
-  else:
-    return round(len(violations) / 12, 2)
-
-def calculate_violations_per_building(violationNum, buildingNum, year):
-  if violationNum and buildingNum and year:
-    if int(now.year) == int(year):
-      return round((violationNum / percent_year_complete) / float(buildingNum), 2)
-    else:
-      return round(float(violationNum) / float(buildingNum), 2)
-  else:
-    print("Missing value: " + str(violationNum) + " - " + str(buildingNum) + " - " + str(year))
-
-def write_csv(dest_file, boundary_key):
-  def sort_by_key(obj):
-    return obj[boundary_key]
-
-  with open(dest_file + '.csv', 'w') as outcsv:
-    print("writing to CSV")
-    writer = csv.writer(outcsv)
-    writer.writerow([boundary_key] + generate_year_headers())
-    for boundary in sorted(boundary_list, key=sort_by_key):
-      if boundary[boundary_key] != "" and boundary_key in boundary:
-        writer.writerow(generate_row(boundary, boundary_key))
-
-def add_json_keys(boundary, boundary_key):
-  boundary["2010_buildings"] = None
-  boundary["2017_buildings"] = match_neighborhood_to_building_num(boundary, boundary_key)
-  
-  for year in sorted(years_found):
-    if year in boundary:
-      boundary[year]["violationsPerBuilding"] = calculate_violations_per_building(len(boundary["violations"][year]), match_neighborhood_to_building_num(boundary, boundary_key), year) if year in boundary["violations"] else "0"
-    else:
-      boundary[year] = {}
-      boundary[year]["violationsPerBuilding"] = calculate_violations_per_building(len(boundary["violations"][year]), match_neighborhood_to_building_num(boundary, boundary_key), year) if year in boundary["violations"] else "0"
-
-def write_json(dest_file, boundary_key):
-  with open(dest_file + '.json', 'w') as out_json:
-    print("writing to JSON")
-    out_boundary_list = boundary_list
-
-    for boundary in out_boundary_list:
-      add_json_keys(boundary, boundary_key)
-
-    data = {
-      boundary_key: boundary_list
-    }
-
-    json.dump(data, out_json, sort_keys=True, indent=2)
-
-
-def process_data(source_file, dest_file, boundary_key, date_key):
+def process_data(source_file, boundary_key, date_key):
   with open(source_file) as violations_data:
     violations_json = json.load(violations_data)
     print("Data loaded")
@@ -148,26 +66,26 @@ def process_data(source_file, dest_file, boundary_key, date_key):
       create_or_append_to_boundary_list(violation, boundary_key, date_key)
       process_count += 1
 
-  write_csv(dest_file, boundary_key)
-  write_json(dest_file, boundary_key)
 
-def process_neighborhood_data(source_file, dest_file, boundary_key, date_key):
-  buildings_csv=pd.read_csv('data/buildings_data/bk_buildings_by_neighborhood_totals.csv', sep=',',header=None)  
+def process_neighborhood_data(source_file, boundary_key, date_key):
+  buildings_csv=pd.read_csv('data/buildings_data/csv/bk_buildings_by_neighborhood_totals.csv', sep=',',header=None)  
   for total in buildings_csv.values:
     buildings_data.append(total)
 
   buildings_data.pop(0)
-  process_data(source_file, dest_file, boundary_key, date_key)
+  process_data(source_file, boundary_key, date_key)
+  bk_neighborhood_violations_by_year.write_csv(boundary_list, years_found, buildings_data)
 
-def process_census_tract_data(source_file, dest_file, boundary_key, date_key):
-  buildings_csv=pd.read_csv('data/buildings_data/bk_buildings_by_census_tract_totals.csv', sep=',',header=None)  
+def process_census_tract_data(source_file, boundary_key, date_key):
+  buildings_csv=pd.read_csv('data/buildings_data/csv/bk_buildings_by_census_tract_totals.csv', sep=',',header=None)  
   for total in buildings_csv.values:
     buildings_data.append(total)
 
   buildings_data.pop(0)
-  process_data(source_file, dest_file, boundary_key, date_key)
+  process_data(source_file, boundary_key, date_key)
+  bk_census_tract_violations_by_year.write_csv(boundary_list, years_found, buildings_data)
 
-# process_neighborhood_data("data/violations_data/bk_nyc_dob_violation_data.json", "data/violations_data/bk_neighborhood_violations_by_year", "neighborhood", "issue_date")
+# process_neighborhood_data("data/violations_data/bk_nyc_dob_violation_data.json", "neighborhood", "issue_date")
 
-process_census_tract_data("data/violations_data/bk_nyc_dob_violation_data.json", "data/violations_data/bk_census_tract_violations_by_year", "CT2010", "issue_date")
+# process_census_tract_data("data/violations_data/bk_nyc_dob_violation_data.json", "CT2010", "issue_date")
 

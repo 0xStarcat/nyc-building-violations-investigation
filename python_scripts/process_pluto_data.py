@@ -1,13 +1,11 @@
 import boundary_helpers
 import json 
 import index_data
-import count_features_by_boundary
-import count_features_by_key
 
 from shapely.geometry import mapping, shape, Point
 
 neighborhood_json = {}
-with open("data/boundary_data/neighborhoods/bk_neighborhoods.geojson") as neighborhood_data:
+with open("data/boundary_data/geojson/bk_neighborhoods.geojson") as neighborhood_data:
   neighborhood_json = json.load(neighborhood_data)
   print("Neighborhood json loaded")
 
@@ -124,8 +122,6 @@ def clean_properties(feature):
     del feature["properties"]["Council"]
   if "AreaSource" in feature["properties"]:
     del feature["properties"]["AreaSource"]
-  if "Tract2010" in feature["properties"]:
-    del feature["properties"]["Tract2010"]
   if "CB2010" in feature["properties"]:
     del feature["properties"]["CB2010"]
   if "CD" in feature["properties"]:
@@ -178,8 +174,6 @@ def clean_properties(feature):
     del feature["properties"]["Address"]
   if "ZipCode" in feature["properties"]:
     del feature["properties"]["ZipCode"]
-  if "YearBuilt" in feature["properties"]:
-    del feature["properties"]["YearBuilt"]
   if "ResArea" in feature["properties"]:
     del feature["properties"]["ResArea"]  
 
@@ -228,16 +222,3 @@ def process_map_pluto():
 
 # Clean and process the map pluto data
 # process_map_pluto()
-
-# Index Blocks
-# index_data.index_by_key("data/buildings_data/processed_mappluto.geojson", "data/buildings_data/bk_buildings_by_block", "Block")
-
-# Index neighborhoods
-# index_data.index_by_key("data/buildings_data/processed_mappluto.geojson", "data/buildings_data/bk_buildings_by_neighborhood", "neighborhood")
-
-# Index census tracts
-# index_data.index_by_key("data/buildings_data/processed_mappluto.geojson", "data/buildings_data/bk_buildings_by_census_tract", "CT2010")
-
-# Count neighborhoods
-# count_features_by_key.count_by_key("data/buildings_data/processed_mappluto.geojson", "data/buildings_data/bk_buildings_by_neighborhood", "neighborhood")
-

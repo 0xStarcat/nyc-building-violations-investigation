@@ -44,7 +44,7 @@ def write_json(dest_file, key, key_list):
     json.dump(data, outjson, sort_keys=True, indent=2)
 
 def write_csv(dest_file, key, key_list):
-  with open(dest_file + '_totals.csv', 'w') as outcsv:
+  with open(dest_file, 'w') as outcsv:
     def sort_by_key(obj):
           return obj[key]
 
@@ -66,9 +66,6 @@ def count_by_key(source_file, dest_file, key):
       create_or_append_to_key_list(feature, key)
       process_count += 1
 
-
   write_csv(dest_file, key, key_list)
 
-  write_json(dest_file, key, key_list)
-
-# count_by_key("data/buildings_data/processed_mappluto.geojson", "data/buildings_data/bk_buildings_by_census_tract", "CT2010")
+  # write_json(dest_file, key, key_list)

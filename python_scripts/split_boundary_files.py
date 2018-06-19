@@ -53,7 +53,7 @@ def splitFeatureByBoroCode(feature):
       print("  * Couldn't match " + feature["properties"]["BoroCode"])
   else:
     print("    * Couldn't find a code!")
-with open("data/boundary_data/neighborhoods/neighborhoods.geojson") as neighborhood_data:
+with open("data/boundary_data/geojson/neighborhoods.geojson") as neighborhood_data:
   manhattan_features = []
   bronx_features = []
   brooklyn_features = []
@@ -76,7 +76,7 @@ with open("data/boundary_data/neighborhoods/neighborhoods.geojson") as neighborh
     json.dump(neighborhood_json, bronx_neighborhood_data, sort_keys=True, indent=2)
     print("  Bronx boundary data saved " + str(len(bronx_features)) + " features")
 
-  with open("data/boundary_data/neighborhoods/bk_neighborhoods.geojson", "w") as brooklyn_neighborhood_data:
+  with open("data/boundary_data/geojson/bk_neighborhoods.geojson", "w") as brooklyn_neighborhood_data:
     neighborhood_json["features"] = brooklyn_features
     json.dump(neighborhood_json, brooklyn_neighborhood_data, sort_keys=True, indent=2)
     print("  Brooklyn boundary data saved " + str(len(brooklyn_features)) + " features")
@@ -94,7 +94,7 @@ with open("data/boundary_data/neighborhoods/neighborhoods.geojson") as neighborh
   print("Neighborhood data splitting completed.")
 
 
-with open("data/boundary_data/census_tracts/census_tracts_2010.geojson") as census_tract_data:
+with open("data/boundary_data/geojson/census_tracts_2010.geojson") as census_tract_data:
   manhattan_features = []
   bronx_features = []
   brooklyn_features = []
@@ -117,7 +117,7 @@ with open("data/boundary_data/census_tracts/census_tracts_2010.geojson") as cens
     json.dump(neighborhood_json, bronx_neighborhood_data, sort_keys=True, indent=2)
     print("  Bronx boundary data saved " + str(len(bronx_features)) + " features")
 
-  with open("data/boundary_data/census_tracts/bk_census_tracts_2010.geojson", "w") as brooklyn_neighborhood_data:
+  with open("data/boundary_data/geojson/bk_census_tracts_2010.geojson", "w") as brooklyn_neighborhood_data:
     neighborhood_json["features"] = brooklyn_features
     json.dump(neighborhood_json, brooklyn_neighborhood_data, sort_keys=True, indent=2)
     print("  Brooklyn boundary data saved " + str(len(brooklyn_features)) + " features")

@@ -3,7 +3,10 @@ const Store = {
     censusTracts: {},
     neighborhoods: {}
   },
-  violationData: {}
+  geoJson: {
+    violationData: {},
+    newBuildings: {}
+  }
 }
 
 export default Store

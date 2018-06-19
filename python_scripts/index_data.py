@@ -17,7 +17,7 @@ def create_index_list(feature_data, index_key):
   index_list.append({index_key: str(feature_data["properties"][index_key]), "features": [feature_data]})
   return
 
-def process_pluto_data(pluto_features, index_key):
+def process_source_json(pluto_features, index_key):
   process_count = 0
   for f in pluto_features:
     print(str(process_count) + "/" + str(len(pluto_features)))
@@ -26,24 +26,23 @@ def process_pluto_data(pluto_features, index_key):
       create_or_append_to_index_list(f, index_key)
   return
 
-def write_json(dest_file, index_key):
-  with open(dest_file + ".json", "w") as out_data:
-    print("Writing data to " + dest_file)
+def write_json(dest_path, index_key):
+  with open(dest_path, "w") as out_data:
+    print("Writing data to " + dest_path)
     data = {
       index_key: index_list
     }
     json.dump(data, out_data, sort_keys=True, indent=2)
 
-# index_by_key("data/buildings_data/processed_mappluto.geojson", "data/buildings_data/bk_mappluto_by_block.json", "blocks")
-def index_by_key(source_file, dest_file, index_key):
+def index_by_key(source_path, dest_file_path, index_key):
   print("Indexing by: " + index_key)
-  with open(source_file) as mappluto_file:
-    print(source_file + " loaded")
-    pluto_data = json.load(mappluto_file)
+  with open(source_path) as source_file:
+    print(source_path + " loaded")
+    source_json = json.load(source_file)
 
-    process_pluto_data(pluto_data["features"], index_key)
+    process_source_json(source_json["features"], index_key)
     print(str(len(index_list)) + " indexed")
 
-    write_json(dest_file, index_key)
+    write_json(dest_file_path, index_key)
     print("Features indexed")
 

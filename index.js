@@ -32,6 +32,14 @@ app.get('/violations/:fileName', function(req, res) {
     });
 })
 
+app.get('/buildings/:fileName', function(req, res) {
+  var file = './data/buildings_data/' + req.params["fileName"] + '.geojson'
+  fs.readFile(file, function(err, content){
+        res.write(content);
+        res.end();
+    });
+})
+
 //Start the server on the defined port
 app.listen(port, function()
 {

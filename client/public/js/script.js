@@ -1,5 +1,5 @@
 import { fetchData } from './fetchData'
-import { styleIncomeLayers } from './geojsonHelpers.js'
+import { styleIncomeLayers, styleViolationsPerBuildingLayers } from './geojsonHelpers.js'
 import Store from './store'
 
 /* eslint-disable */
@@ -18,7 +18,7 @@ fetchData()
   .then(() => {
     console.log("fetch complete")
     setupGeoJsonBoundaries()
-    // setupViolationPoints("2015")
+    setupMapMarkers()
     console.log("setup complete")
   })
   .catch(error => {
@@ -38,7 +38,7 @@ const geojsonMarkerOptions = {
 const setupGeoJsonBoundaries = () => {
   L.geoJSON(Store.boundaryData.censusTracts, {
     onEachFeature: onCensusTractFeatureEach,
-    style: styleIncomeLayers
+    style: styleViolationsPerBuildingLayers // styleIncomeLayers
   }).addTo(map)
 
   L.geoJSON(Store.boundaryData.neighborhoods, {
@@ -52,8 +52,24 @@ const setupGeoJsonBoundaries = () => {
   }).addTo(map)
 }
 
-const setupViolationPoints = year => {
-  let filtered_data = Store.violationData
+const setupMapMarkers = () => {
+  // setupViolationMarkers("2015")
+  setupNewBuildingMarkers()
+}
+
+const setupNewBuildingMarkers = year => {
+  let filtered_data = Store.geoJson.newBuildings
+  // filtered_data.features = Store.violationData.features.filter((feature) => feature["properties"]["issue_date"].substring(0, 4) === year)
+  L.geoJSON(filtered_data, {
+    pointToLayer: (feature, latlng) => {
+          return L.circleMarker(latlng, geojsonMarkerOptions);
+      },
+    onEachFeature: onViolationEachFeature,
+  }).addTo(map);
+}
+
+const setupViolationMarkers = year => {
+  let filtered_data = Store.geoJson.violationData
   filtered_data.features = Store.violationData.features.filter((feature) => feature["properties"]["issue_date"].substring(0, 4) === year)
   L.geoJSON(filtered_data, {
     pointToLayer: (feature, latlng) => {
@@ -89,7 +105,11 @@ function onCensusTractClick(e) {
   const t = L.tooltip({permanent: false, interactive:true, sticky: false}, e.target).setLatLng(e.latlng)
                                                                   .setContent('Census Tract: ' + e.target.feature.properties.CT2010 + '<br/>' + 'Median Income 2010: ' + median_income_2010 + 
                                                                     '<br/>' + 
-                                                                    'Median Income 2017: ' + median_income_2017
+                                                                    'Median Income 2017: ' + median_income_2017 +
+                                                                    '<br/>' +
+                                                                    'Total Buildings: ' + e.target.feature.properties["2017"]["totalBuildings"] +
+                                                                    '<br/>' + 
+                                                                    'Violation Per Bldg: ' + e.target.feature.properties["2017"]["violationsPerBuilding"]
 
                                                                     )
                                                                   .addTo(map);
@@ -109,6 +129,10 @@ function onNeighborhoodFeatureEach(feature, layer) {
   layer.on({
     mouseover: onNeighborhoodMouseover
   })
+}
+
+function onNewBuildingEachFeature(feature, layer) {
+  
 }
 
 function onViolationEachFeature(feature, layer) {

@@ -10,9 +10,14 @@ export const fetchData = () => {
       axios.get('/boundaries/neighborhoods/bk_neighborhoods').then(response => {
         Store.boundaryData.neighborhoods = response.data
         axios.get('/violations/bk_nyc_dob_violation_data').then(response => {
-          Store.violationData = response.data
-          resolve()
-        }).catch(error => {
+          Store.geoJson.violationData = response.data
+          axios.get('/buildings/bk_new_buildings').then(response => {
+            Store.geoJson.newBuildings = response.data
+            resolve()
+          }).catch(error => {
+          reject(error)
+        })
+      }).catch(error => {
           reject(error)
         })
       }).catch(error => {

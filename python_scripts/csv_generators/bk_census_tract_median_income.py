@@ -1,8 +1,4 @@
-import pandas as pd
 import csv 
-
-def read_csv(source):
-  return pd.read_csv(source, sep=',',header=1)
 
 def generate_csv():
   # 2010 median income
@@ -11,7 +7,8 @@ def generate_csv():
   income_data = []
 
   # read income CSV
-  income_csv = read_csv("data/demographic_data/bk_median_income_2017.csv")
+  income_csv = list(csv.reader(open("data/demographic_data/bk_median_income_2017.csv")))
+  income_csv.pop(0)
   print("csv loaded")
 
   def generate_row(income_row):
@@ -26,5 +23,5 @@ def generate_csv():
     print("writing to CSV")
     writer = csv.writer(outcsv)
     writer.writerow(["CT2010", "Median Income 2011", "Median Income 2017", "Change 2011-2017"])
-    for index, row in income_csv.iterrows():
+    for row in income_csv:
       writer.writerow(generate_row(row))

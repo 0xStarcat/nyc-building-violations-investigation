@@ -27,25 +27,21 @@ def fill_json():
   tract_json = json.load(open('data/boundary_data/geojson/bk_census_tracts_2010.geojson', 'r'))
 
   for tract in tract_json["features"]:
-    if "2017" in tract:
-      del tract["2017"]
+    if "medianIncomeChange20102017" in tract["properties"]:
+      del tract["properties"]["medianIncomeChange20102017"]
 
-    if "2017" in tract["properties"]:
-      del tract["properties"]["2017"]
-
-    if "median_income_2010" in tract["properties"]:
-      del tract["properties"]["median_income_2010"]
-
-    if "median_income_2017" in tract["properties"]:
-      del tract["properties"]["median_income_2017"]
+    if "totalNewBuildings20102017" in tract["properties"]:
+      del tract["properties"]["totalNewBuildings20102017"]
 
     tract["properties"]["neighborhood"] = match_census_tract_to_neighborhood(tract, neighborhood_json)
     tract["properties"]["medianIncome2011"] = get_value_from_matching_row(tract, 1, "CT2010", income_csv)
     tract["properties"]["medianIncome2017"] = get_value_from_matching_row(tract, 2, "CT2010", income_csv)
-    tract["properties"]["medianIncomeChange20102017"] = get_value_from_matching_row(tract, 3, "CT2010", income_csv)
+    tract["properties"]["medianIncomeChange"] = get_value_from_matching_row(tract, 3, "CT2010", income_csv)
     tract["properties"]["totalBuildings"] = get_value_from_matching_row(tract, 10, "CTLabel", buildings_csv)
     tract["properties"]["pre2011Buildings"] = get_value_from_matching_row(tract, 9, "CTLabel", buildings_csv)
-    tract["properties"]["totalNewBuildings20102017"] = get_value_from_matching_row(tract, 8, "CTLabel", buildings_csv)
+    tract["properties"]["totalNewBuildings"] = get_value_from_matching_row(tract, 8, "CTLabel", buildings_csv)
+    tract["properties"]["totalBuildingSales"] = ""
+    tract["properties"]["totalViolationBuildingSales"] = ""
 
   new_json = tract_json
   with open('data/boundary_data/geojson/bk_census_tracts_2010.geojson', 'w') as out_json:

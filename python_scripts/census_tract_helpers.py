@@ -19,7 +19,7 @@ def write_csv_violations_per_building_per_year():
     for row in csv_reader:
       buildings_data.append(row)
 
-  violations_json = read_json("data/violations_data/json/bk_nyc_dob_violation_data.json")
+  violations_json = read_json("data/violations_data/json/processed_bk_violation_data_2011_2017.json")
   # 2010...2017
   # total
   boundary_list = []

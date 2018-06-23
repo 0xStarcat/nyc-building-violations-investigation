@@ -1,5 +1,6 @@
 export const styleIncomeLayers = feature => {
-        if (feature.properties.median_income_2017 >= 110000) {
+  console.log(feature.properties)
+        if (feature.properties.medianIncome2017 >= 110000) {
             return { 
               color: "white",
               fillColor: "#005a32",
@@ -7,7 +8,7 @@ export const styleIncomeLayers = feature => {
               fillOpacity: 0.5,
               weight: 1
             }
-        } else if (feature.properties.median_income_2017 >= 90000) {
+        } else if (feature.properties.medianIncome2017 >= 90000) {
             return { 
               color: "white",
               fillColor: "#238b45",
@@ -15,7 +16,7 @@ export const styleIncomeLayers = feature => {
               fillOpacity: 0.5,
               weight: 1
             }
-        } else if (feature.properties.median_income_2017 >= 70000) {
+        } else if (feature.properties.medianIncome2017 >= 70000) {
             return { 
               color: "white",
               fillColor: "#41ab5d",
@@ -23,7 +24,7 @@ export const styleIncomeLayers = feature => {
               fillOpacity: 0.5,
               weight: 1
             }
-        } else if (feature.properties.median_income_2017 >= 50000) {
+        } else if (feature.properties.medianIncome2017 >= 50000) {
             return { 
               color: "white",
               fillColor: "#74c476",
@@ -31,7 +32,7 @@ export const styleIncomeLayers = feature => {
               fillOpacity: 0.5,
               weight: 1
             }
-        } else if (feature.properties.median_income_2017 >= 30000) {
+        } else if (feature.properties.medianIncome2017 >= 30000) {
             return { 
               color: "white",
               fillColor: "#a1d99b",
@@ -39,7 +40,7 @@ export const styleIncomeLayers = feature => {
               fillOpacity: 0.5,
               weight: 1
             }
-        } else if (feature.properties.median_income_2017 >= 10000) {
+        } else if (feature.properties.medianIncome2017 >= 10000) {
             return { 
               color: "white",
               fillColor: "#c7e9c0",
@@ -47,7 +48,7 @@ export const styleIncomeLayers = feature => {
               fillOpacity: 0.5,
               weight: 1
             }
-        } else if (!feature.properties.median_income_2017) {
+        } else if (!feature.properties.medianIncome2017) {
             return { 
               color: "#ghowhite",
               fillColor: "#ghostwhite",

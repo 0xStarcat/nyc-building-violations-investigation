@@ -5,48 +5,52 @@ import Store from './store'
 /* eslint-disable */
 var map = L.map('map').setView({ lat: 40.7081, lon: -73.9571 }, 13)
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.wheatpaste/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RhcmNhdCIsImEiOiJjamlpYmlsc28wbjlmM3FwbXdwaXozcWEzIn0.kLmWiUbmdqNLA1atmnTXXA', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+L.tileLayer(
+  'https://api.tiles.mapbox.com/v4/mapbox.wheatpaste/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RhcmNhdCIsImEiOiJjamlpYmlsc28wbjlmM3FwbXdwaXozcWEzIn0.kLmWiUbmdqNLA1atmnTXXA',
+  {
+    attribution:
+      'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     id: 'mapbox.wheatpaste',
     accessToken: 'pk.eyJ1Ijoic3RhcmNhdCIsImEiOiJjamlpYmlsc28wbjlmM3FwbXdwaXozcWEzIn0.kLmWiUbmdqNLA1atmnTXXA'
-}).addTo(map);
+  }
+).addTo(map)
 
 setTimeout(() => map.invalidateSize(), 1)
 
 fetchData()
   .then(() => {
-    console.log("fetch complete")
+    console.log('fetch complete')
     setupGeoJsonBoundaries()
     setupMapMarkers()
-    console.log("setup complete")
+    console.log('setup complete')
   })
   .catch(error => {
-    console.log("error ", error)
+    console.log('error ', error)
   })
 
 const geojsonMarkerOptions = {
   radius: 1,
-  fillColor: "hotpink",
-  color: "hotpink",
+  fillColor: 'hotpink',
+  color: 'hotpink',
   weight: 1,
   opacity: 1,
   fillOpacity: 0.8
-};
-
+}
 
 const setupGeoJsonBoundaries = () => {
+  console.log(Store)
   L.geoJSON(Store.boundaryData.censusTracts, {
     onEachFeature: onCensusTractFeatureEach,
-    style: styleViolationsPerBuildingLayers // styleIncomeLayers
+    style: styleIncomeLayers
   }).addTo(map)
 
   L.geoJSON(Store.boundaryData.neighborhoods, {
     onEachFeature: onNeighborhoodFeatureEach,
     interactive: false,
     style: {
-      weight: "1.5",
-      color: "#e10033",
+      weight: '1.5',
+      color: '#e10033',
       fillOpacity: 0
     }
   }).addTo(map)
@@ -62,21 +66,23 @@ const setupNewBuildingMarkers = year => {
   // filtered_data.features = Store.violationData.features.filter((feature) => feature["properties"]["issue_date"].substring(0, 4) === year)
   L.geoJSON(filtered_data, {
     pointToLayer: (feature, latlng) => {
-          return L.circleMarker(latlng, geojsonMarkerOptions);
-      },
-    onEachFeature: onViolationEachFeature,
-  }).addTo(map);
+      return L.circleMarker(latlng, geojsonMarkerOptions)
+    },
+    onEachFeature: onViolationEachFeature
+  }).addTo(map)
 }
 
 const setupViolationMarkers = year => {
   let filtered_data = Store.geoJson.violationData
-  filtered_data.features = Store.violationData.features.filter((feature) => feature["properties"]["issue_date"].substring(0, 4) === year)
+  filtered_data.features = Store.violationData.features.filter(
+    feature => feature['properties']['issue_date'].substring(0, 4) === year
+  )
   L.geoJSON(filtered_data, {
     pointToLayer: (feature, latlng) => {
-          return L.circleMarker(latlng, geojsonMarkerOptions);
-      },
-    onEachFeature: onViolationEachFeature,
-  }).addTo(map);
+      return L.circleMarker(latlng, geojsonMarkerOptions)
+    },
+    onEachFeature: onViolationEachFeature
+  }).addTo(map)
 }
 
 function onCensusTractFeatureEach(feature, layer) {
@@ -92,37 +98,39 @@ const onCensusTractMouseout = e => {
 }
 
 const onCensusTrackMouseover = e => {
-  e.target.bindTooltip('Neighborhood: ' + e.target.feature.properties.neighborhood, {permanent: false, interactive: false, sticky: false, offset: [0, -50], direction: "top"}, e.target).openTooltip();
+  e.target
+    .bindTooltip(
+      'Neighborhood: ' + e.target.feature.properties.neighborhood,
+      { permanent: false, interactive: false, sticky: false, offset: [0, -50], direction: 'top' },
+      e.target
+    )
+    .openTooltip()
 }
 
 function onCensusTractClick(e) {
-
-
   // debugger
-  let median_income_2010 = String(Math.round(e.target.feature.properties.median_income_2010))
-  let median_income_2017 = String(Math.round(e.target.feature.properties.median_income_2017))
+  let medianIncome2011 = String(Math.round(e.target.feature.properties.median_income_2010))
+  let medianIncome2017 = String(Math.round(e.target.feature.properties.median_income_2017))
   console.log(e.target.feature.properties)
-  const t = L.tooltip({permanent: false, interactive:true, sticky: false}, e.target).setLatLng(e.latlng)
-                                                                  .setContent('Census Tract: ' + e.target.feature.properties.CT2010 + '<br/>' + 'Median Income 2010: ' + median_income_2010 + 
-                                                                    '<br/>' + 
-                                                                    'Median Income 2017: ' + median_income_2017 +
-                                                                    '<br/>' +
-                                                                    'Total Buildings: ' + e.target.feature.properties["2017"]["totalBuildings"] +
-                                                                    '<br/>' + 
-                                                                    'Violation Per Bldg: ' + e.target.feature.properties["2017"]["violationsPerBuilding"]
-
-                                                                    )
-                                                                  .addTo(map);
-  //   L.tooltip({
-  //   offset: e.latlng,
-  //   direction: 'auto'
-
-
-  // }, layer).openTooltip()
-  // L.popup()
-  //   .setLatLng(e.latlng)
-  //   .setContent(String(median_income_2017))
-  //   .openOn(map);
+  const t = L.tooltip({ permanent: false, interactive: true, sticky: false }, e.target)
+    .setLatLng(e.latlng)
+    .setContent(
+      'Census Tract: ' +
+        e.target.feature.properties.CT2010 +
+        '<br/>' +
+        'Median Income 2011: ' +
+        medianIncome2011 +
+        '<br/>' +
+        'Median Income 2017: ' +
+        medianIncome2017 +
+        '<br/>' +
+        'Total Buildings: ' +
+        e.target.feature.properties['totalBuildings'] +
+        '<br/>' +
+        'Violation Per Bldg: ' +
+        e.target.feature.properties['violationsPerBuilding']
+    )
+    .addTo(map)
 }
 
 function onNeighborhoodFeatureEach(feature, layer) {
@@ -131,31 +139,29 @@ function onNeighborhoodFeatureEach(feature, layer) {
   })
 }
 
-function onNewBuildingEachFeature(feature, layer) {
-  
-}
+function onNewBuildingEachFeature(feature, layer) {}
 
 function onViolationEachFeature(feature, layer) {
   layer.on({
     click: onViolationClick
-  });
+  })
 }
 
 const onNeighborhoodMouseover = e => {
   console.log(e)
   e.target.options = {
-    color: "red",
-    weight: "4",
-    fillColor: "purple",
+    color: 'red',
+    weight: '4',
+    fillColor: 'purple',
     onEachFeature: e.target.options.onEachFeature
   }
-} 
+}
 
 function onNeighborhoodClick(e, layer) {
   L.popup()
     .setLatLng(e.latlng)
     .setContent(e.target.feature.properties.neighborhood)
-    .openOn(map);
+    .openOn(map)
 }
 
 function onViolationClick(e) {

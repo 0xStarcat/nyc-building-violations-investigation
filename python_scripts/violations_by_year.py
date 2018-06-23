@@ -22,15 +22,15 @@ def create_or_append_to_boundary_list(violation, boundary_key, date_key):
   if boundary_key in violation["properties"]:
     match = next((boundary for boundary in boundary_list if boundary[boundary_key] == str(violation["properties"][boundary_key])), False)
     
-  if match == False:
-    create_boundary_entry(violation, boundary_key, date_key)
-  else:
+  if match:
     print("    Found match " + str(match[boundary_key]))
     if violation["properties"][date_key][:4] in match["violations"]:
       match["violations"][violation["properties"][date_key][:4]].append(violation)
       print("  * adding violation to " + violation["properties"][date_key][:4])
     else:
       create_date_key(violation, match, date_key)
+  else:
+    create_boundary_entry(violation, boundary_key, date_key)
 
 
 def create_boundary_entry(violation, boundary_key, date_key):
@@ -68,6 +68,8 @@ def process_data(source_file, boundary_key, date_key):
 
 
 def process_neighborhood_data(source_file, boundary_key, date_key):
+  boundary_list = []
+  years_found = []
   buildings_csv=pd.read_csv('data/buildings_data/csv/bk_buildings_by_neighborhood_totals.csv', sep=',',header=None)  
   for total in buildings_csv.values:
     buildings_data.append(total)
@@ -77,6 +79,8 @@ def process_neighborhood_data(source_file, boundary_key, date_key):
   bk_neighborhood_violations_by_year.write_csv(boundary_list, years_found, buildings_data)
 
 def process_census_tract_data(source_file, boundary_key, date_key):
+  boundary_list = []
+  years_found = []
   buildings_csv=pd.read_csv('data/buildings_data/csv/bk_buildings_by_census_tract_totals.csv', sep=',',header=None)  
   for total in buildings_csv.values:
     buildings_data.append(total)
@@ -85,7 +89,7 @@ def process_census_tract_data(source_file, boundary_key, date_key):
   process_data(source_file, boundary_key, date_key)
   bk_census_tract_violations_by_year.write_csv(boundary_list, years_found, buildings_data)
 
-# process_neighborhood_data("data/violations_data/bk_nyc_dob_violation_data.json", "neighborhood", "issue_date")
+# process_neighborhood_data("data/violations_data/json/processed_bk_violation_data_2011_2017.json", "neighborhood", "issue_date")
 
-# process_census_tract_data("data/violations_data/bk_nyc_dob_violation_data.json", "CT2010", "issue_date")
+process_census_tract_data("data/violations_data/json/processed_bk_violation_data_2011_2017.json", "CT2010", "issue_date")
 

@@ -11,6 +11,12 @@ from csv_generators import bk_new_and_total_buildings_by_census_tract_generator
 from geojson_generators import bk_new_buildings
 from geojson_generators import bk_new_buildings_by_census_tract
 
+def get_neighborhood_name_from_coordinates(geometry, neighborhood_json):
+  match = next((neighborhood for neighborhood in neighborhood_json["features"] if shape(neighborhood["geometry"]).contains(shape(geometry).representative_point())), False) 
+  if match:
+    return match["properties"]["neighborhood"]
+  else:
+    return None
 
 def add_neighborhood_property_to_feature(feature, neighborhood_json):
   matching_ct = next((neighborhood for neighborhood in neighborhood_json["features"] if shape(neighborhood["geometry"]).contains(Point(feature["geometry"]["coordinates"]))), False) 

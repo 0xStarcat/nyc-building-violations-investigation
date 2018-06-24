@@ -3,10 +3,11 @@ __pycache__/
 *$py.class
 
 bk_mappluto_shapefile_bundle.zip
-node_modules
+node_modules/
 yarn-error.log
 <<<<<<< HEAD
-data
+<<<<<<< HEAD
+data/
 
 # :(
 bk_building_violation_project.sqlite

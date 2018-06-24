@@ -170,8 +170,6 @@ def clean_properties(feature):
     del feature["properties"]["YCoord"]
   if "BBL" in feature["properties"]:
     del feature["properties"]["BBL"] 
-  if "Address" in feature["properties"]:
-    del feature["properties"]["Address"]
   if "ZipCode" in feature["properties"]:
     del feature["properties"]["ZipCode"]
   if "ResArea" in feature["properties"]:
@@ -187,7 +185,7 @@ def process_map_pluto():
     for feature in data["features"]:
       # display count
       count = count + 1
-      print(str(count) +"/" + str(len(data["features"])) + " - " + str(len(new_features)) + " included")
+      print(str(count) + "/" + str(len(data["features"])) + " - " + str(len(new_features)) + " included")
 
       # delete all properties for testing
       # del feature["properties"]
@@ -203,13 +201,13 @@ def process_map_pluto():
       clean_properties(feature)
       
       # Convert to point
-      if "geometry" in feature:
-        if feature["geometry"]["type"] != "Point":
-          polygon = shape(feature["geometry"])
-          rPoint = polygon.representative_point()
-          feature["geometry"] = mapping(rPoint)
+      # if "geometry" in feature:
+      #   if feature["geometry"]["type"] != "Point":
+      #     polygon = shape(feature["geometry"])
+      #     rPoint = polygon.representative_point()
+      #     feature["geometry"] = mapping(rPoint)
 
-          boundary_helpers.add_neighborhood_property_to_feature(feature, neighborhood_json)
+      #     boundary_helpers.add_neighborhood_property_to_feature(feature, neighborhood_json)
 
       new_features.append(feature)
 
@@ -221,4 +219,4 @@ def process_map_pluto():
 
 
 # Clean and process the map pluto data
-# process_map_pluto()
+process_map_pluto()

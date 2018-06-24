@@ -7,7 +7,7 @@ def seed_neighborhoods(c, neighborhood_json):
   neigh_col1 = 'name'
   neigh_col2 = 'geometry'
   c.execute('CREATE TABLE IF NOT EXISTS {tn} (id INTEGER PRIMARY KEY AUTOINCREMENT, {col1} TEXT, {col2} TEXT, UNIQUE({col1}))'\
-          .format(tn=neighborhoods_table, col1=neigh_col1, col2=neigh_col2))
+    .format(tn=neighborhoods_table, col1=neigh_col1, col2=neigh_col2))
 
   
 

@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-
+const { Neighborhood } = require('./Neighborhood.js')
 const { seq } = require('./sequelize.js')
 
 const CensusTract = seq.define(
@@ -12,6 +12,10 @@ const CensusTract = seq.define(
     geometry: {
       type: Sequelize.JSON,
       field: 'geometry'
+    },
+    neighborhood_id: {
+      type: Sequelize.INTEGER,
+      field: 'neighborhood_id'
     }
   },
   {
@@ -19,10 +23,7 @@ const CensusTract = seq.define(
   }
 )
 
-console.log('hi')
-CensusTract.findAll().then(data => {
-  console.log(data[0])
-})
+// CensusTract.belongsTo(Neighborhood, { foreignKey: 'neighborhood_id', targetKey: 'id' })
 
 module.exports = {
   CensusTract: CensusTract

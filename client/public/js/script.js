@@ -22,7 +22,7 @@ fetchData()
   .then(() => {
     console.log('fetch complete')
     setupGeoJsonBoundaries()
-    setupMapMarkers()
+    // setupMapMarkers()
     console.log('setup complete')
   })
   .catch(error => {
@@ -100,7 +100,7 @@ const onCensusTractMouseout = e => {
 const onCensusTrackMouseover = e => {
   e.target
     .bindTooltip(
-      'Neighborhood: ' + e.target.feature.properties.neighborhood,
+      'Neighborhood: ' + e.target.feature.properties.name,
       { permanent: false, interactive: false, sticky: false, offset: [0, -50], direction: 'top' },
       e.target
     )
@@ -111,12 +111,11 @@ function onCensusTractClick(e) {
   // debugger
   let medianIncome2011 = String(Math.round(e.target.feature.properties.median_income_2010))
   let medianIncome2017 = String(Math.round(e.target.feature.properties.median_income_2017))
-  console.log(e.target.feature.properties)
   const t = L.tooltip({ permanent: false, interactive: true, sticky: false }, e.target)
     .setLatLng(e.latlng)
     .setContent(
       'Census Tract: ' +
-        e.target.feature.properties.CT2010 +
+        e.target.feature.properties.name +
         '<br/>' +
         'Median Income 2011: ' +
         medianIncome2011 +
@@ -148,7 +147,6 @@ function onViolationEachFeature(feature, layer) {
 }
 
 const onNeighborhoodMouseover = e => {
-  console.log(e)
   e.target.options = {
     color: 'red',
     weight: '4',

@@ -1,12 +1,15 @@
-import json
-import boundary_helpers
+import os,sys,inspect
+sys.path.insert(1, os.path.join(sys.path[0], '..')) 
 
-neighborhoods_table = 'neighborhoods'
+import boundary_helpers
+import json
+import neighborhoods_seeds
+
 census_tracts_table = 'census_tracts'
 
 def match_neighborhood_name_to_id(c, name):
     c.execute('SELECT * FROM {tn} WHERE {cn}=\'{neighorhood_name}\''\
-      .format(tn=neighborhoods_table, cn="name", neighorhood_name=name))
+      .format(tn=neighborhoods_seeds.neighborhoods_table, cn="name", neighorhood_name=name))
     result = c.fetchone()
     if result:
       return result[0]
@@ -23,7 +26,7 @@ def seed_census_tracts(c, neighborhood_json):
   ct_col5 = 'geometry'
 
   c.execute('CREATE TABLE IF NOT EXISTS {tn} (id INTEGER PRIMARY KEY AUTOINCREMENT, {col1} INTEGER NOT NULL REFERENCES {ref_table}(id), {col2} TEXT, {col3} TEXT, {col4} TEXT, {col5} TEXT, UNIQUE({col2}))'\
-    .format(tn=census_tracts_table, ref_table=neighborhoods_table, col1=ct_col1, col2=ct_col2, col3=ct_col3, col4=ct_col4, col5=ct_col5))
+    .format(tn=census_tracts_table, ref_table=neighborhoods_seeds.neighborhoods_table, col1=ct_col1, col2=ct_col2, col3=ct_col3, col4=ct_col4, col5=ct_col5))
 
   census_tract_json = json.load(open('data/boundary_data/geojson/bk_census_tracts_2010.geojson'))
 

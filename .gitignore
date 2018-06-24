@@ -1,5 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
 bk_mappluto_shapefile_bundle.zip
 node_modules
 yarn-error.log
+<<<<<<< HEAD
 data
-__pycache__/
+
+# :(
+bk_building_violation_project.sqlite

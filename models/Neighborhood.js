@@ -1,37 +1,25 @@
-const Sequelize = require('sequelize')
-
-const { seq } = require('./sequelize.js')
-const { CensusTract } = require('./CensusTract.js')
-
-const Neighborhood = seq.define(
-  'neighborhood',
-  {
-    name: {
-      type: Sequelize.STRING,
-      field: 'name'
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define(
+    'neighborhood',
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        field: 'id',
+        primaryKey: true
+      },
+      name: {
+        type: DataTypes.STRING,
+        field: 'name'
+      },
+      geometry: {
+        type: DataTypes.JSON,
+        field: 'geometry'
+      }
     },
-    geometry: {
-      type: Sequelize.JSON,
-      field: 'geometry'
+    {
+      tableName: 'neighborhoods',
+      timestamps: false,
+      classMethods: {}
     }
-  },
-  {
-    timestamps: false
-  }
-)
-
-Neighborhood.hasMany(CensusTract, { foreignKey: 'neighborhood_id' })
-
-// Neighborhood.findOne({
-//   include: [
-//     {
-//       model: CensusTract
-//     }
-//   ]
-// }).then(data => {
-//   return data
-// })
-
-module.exports = {
-  Neighborhood: Neighborhood
+  )
 }

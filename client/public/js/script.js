@@ -100,7 +100,7 @@ const onCensusTractMouseout = e => {
 const onCensusTrackMouseover = e => {
   e.target
     .bindTooltip(
-      'Neighborhood: ' + e.target.feature.properties.name,
+      'Neighborhood: ' + e.target.feature.properties.neighborhood,
       { permanent: false, interactive: false, sticky: false, offset: [0, -50], direction: 'top' },
       e.target
     )
@@ -116,6 +116,9 @@ function onCensusTractClick(e) {
     .setContent(
       'Census Tract: ' +
         e.target.feature.properties.name +
+        '<br/>' +
+        'Neighborhood: ' +
+        e.target.feature.properties.neighborhood +
         '<br/>' +
         'Median Income 2011: ' +
         medianIncome2011 +

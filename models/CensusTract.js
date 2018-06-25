@@ -1,30 +1,37 @@
-const Sequelize = require('sequelize')
-const { Neighborhood } = require('./Neighborhood.js')
-const { seq } = require('./sequelize.js')
+// const { db } = require('./sequelize.js')
 
-const CensusTract = seq.define(
-  'census_tract',
-  {
-    name: {
-      type: Sequelize.STRING,
-      field: 'name'
+// CensusTract.associate = models => {
+//   CensusTract.belongsTo(Neighborhood, { foreignKey: 'neighborhood_id' })
+// }
+
+// db.CensusTract.belongsTo(Neighborhood)
+
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define(
+    'census_tract',
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        field: 'id',
+        primaryKey: true
+      },
+      name: {
+        type: DataTypes.STRING,
+        field: 'name'
+      },
+      geometry: {
+        type: DataTypes.JSON,
+        field: 'geometry'
+      },
+      neighborhood_id: {
+        type: DataTypes.INTEGER,
+        field: 'neighborhood_id'
+      }
     },
-    geometry: {
-      type: Sequelize.JSON,
-      field: 'geometry'
-    },
-    neighborhood_id: {
-      type: Sequelize.INTEGER,
-      field: 'neighborhood_id'
+    {
+      tableName: 'census_tracts',
+      timestamps: false,
+      classMethods: {}
     }
-  },
-  {
-    timestamps: false
-  }
-)
-
-// CensusTract.belongsTo(Neighborhood, { foreignKey: 'neighborhood_id', targetKey: 'id' })
-
-module.exports = {
-  CensusTract: CensusTract
+  )
 }

@@ -9,6 +9,9 @@ const sequelize = new Sequelize('database', 'username', 'password', {
     acquire: 30000,
     idle: 10000
   },
+  define: {
+    timestamps: false // true by default
+  },
 
   // SQLite only
   storage: './bk_building_violation_project.sqlite',
@@ -17,6 +20,17 @@ const sequelize = new Sequelize('database', 'username', 'password', {
   operatorsAliases: false
 })
 
+const db = {
+  Sequelize: Sequelize,
+  sequelize: sequelize
+}
+
+db.Neighborhood = sequelize.import('./Neighborhood.js')
+db.CensusTract = sequelize.import('./CensusTract.js')
+
+db.CensusTract.belongsTo(db.Neighborhood, { foreignKey: 'neighborhood_id', targetKey: 'id' })
+
 module.exports = {
-  seq: sequelize
+  seq: sequelize,
+  db: db
 }

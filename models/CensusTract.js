@@ -1,11 +1,3 @@
-// const { db } = require('./sequelize.js')
-
-// CensusTract.associate = models => {
-//   CensusTract.belongsTo(Neighborhood, { foreignKey: 'neighborhood_id' })
-// }
-
-// db.CensusTract.belongsTo(Neighborhood)
-
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define(
     'census_tract',

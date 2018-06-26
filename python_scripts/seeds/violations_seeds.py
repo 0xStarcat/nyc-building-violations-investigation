@@ -3,18 +3,6 @@ import buildings_seeds
 
 violations_table = 'violations'
 
-# def lot_match(lot, buildings_by_block):
-#   if buildings_by_block == []
-#     print("No buildings by block found")
-#     return
-
-#   lot_match = next((building for building in buildings_by_block if lot == str(building[2])), False)
-#   if lot_match
-#     return lot_match
-#   else:
-#     print("    * no match found for lot " + lot)
-#     return None
-
 def get_description(violation):
   description = ""
   if "violation_description" in violation:
@@ -42,7 +30,7 @@ def seed_violations(c, violation_json):
   c.execute('CREATE TABLE IF NOT EXISTS {tn} (id INTEGER PRIMARY KEY AUTOINCREMENT, {col1} INTEGER NOT NULL REFERENCES {bldg_table}(id), {col2} TEXT, {col3} TEXT)'\
     .format(tn=violations_table, col1=vio_col1, col2=vio_col2, col3=vio_col3, bldg_table=buildings_seeds.buildings_table))
 
-  c.execute('CREATE INDEX idx_building_id ON {tn}({col1})'.format(tn=violations_table, col1=vio_col1))
+  c.execute('CREATE INDEX idx_violation_building_id ON {tn}({col1})'.format(tn=violations_table, col1=vio_col1))
 
   for index, violation in enumerate(violation_json):
     print("Violation: " + str(index) + "/" + str(len(violation_json)))

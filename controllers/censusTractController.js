@@ -1,7 +1,5 @@
 const { db } = require('../models/sequelize.js')
 
-const { convert_rows_to_geojson } = require('../db/helpers')
-
 const constructCensusTractJson = data => {
   return {
     features: data.map(row => {

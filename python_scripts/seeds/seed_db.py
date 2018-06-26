@@ -19,7 +19,7 @@ c.execute('pragma foreign_keys=on;')
 
 
 def drop_tables():
-  c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=permits_seeds.permits_table))
+  # c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=permits_seeds.permits_table))
   # c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=sales_seeds.sales_table))
   # c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=rents_seeds.rents_table))
   # c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=incomes_seeds.incomes_table))
@@ -28,7 +28,7 @@ def drop_tables():
   # c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=census_tracts_seeds.census_tracts_table))
   # c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=neighborhoods_seeds.neighborhoods_table))
 
-# drop_tables()
+drop_tables()
 
 # neighborhood_json = json.load(open('data/boundary_data/geojson/bk_neighborhoods.geojson'))
 # building_json = json.load(open('data/buildings_data/processed_mappluto.geojson'))
@@ -52,9 +52,9 @@ def drop_tables():
 print("Seeding complete.")
 
 # Test DB
-c.execute('SELECT * FROM permits')
+c.execute('SELECT * FROM incomes')
 all_rows = c.fetchall()
-print(all_rows[:30])
+print(all_rows[:1])
 
 
 conn.commit()

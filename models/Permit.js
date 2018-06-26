@@ -1,15 +1,19 @@
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define(
-    'neighborhood',
+    'permit',
     {
       id: {
         type: DataTypes.INTEGER,
         field: 'id',
         primaryKey: true
       },
-      name: {
+      building_id: {
+        type: DataTypes.INTEGER,
+        field: 'building_id'
+      },
+      issue_date: {
         type: DataTypes.STRING,
-        field: 'name'
+        field: 'issue_date'
       },
       geometry: {
         type: DataTypes.JSON,
@@ -17,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     {
-      tableName: 'neighborhoods'
+      tableName: 'permits'
     }
   )
 }

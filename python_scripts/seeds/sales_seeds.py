@@ -1,6 +1,7 @@
 import json
 import buildings_seeds
 import building_events_seeds
+import datetime
 sales_table = 'sales'
 
 def get_price(sale):
@@ -40,7 +41,7 @@ def seed_sales(c, sale_csv):
       continue
 
     building_id = building_match[0]
-    sale_date = sale[20]
+    sale_date = datetime.datetime.strptime(sale[20], "%m/%d/%Y").strftime("%Y%m%d")
     price = get_price(sale)
     
     # Create Sale

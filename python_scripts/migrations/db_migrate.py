@@ -10,14 +10,14 @@ conn = sqlite3.connect(sqlite_file)
 c = conn.cursor()
 c.execute('pragma foreign_keys=on;')
 
-# neighborhoods_migration.migrate_neighborhoods_data(c)
+neighborhoods_migration.migrate_neighborhoods_data(c)
 # census_tracts_migration.migrate_census_tracts_data(c)
 # buildings_migration.migrate_buildings_data(c)
 
 
 conn.commit() 
 
-c.execute('SELECT * FROM buildings')
+c.execute('SELECT * FROM neighborhoods')
 
 results = c.fetchall()
 print(results[0])

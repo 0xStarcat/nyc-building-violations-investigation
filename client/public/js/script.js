@@ -108,7 +108,7 @@ const onCensusTrackMouseover = e => {
 }
 
 function onCensusTractClick(e) {
-  // debugger
+  console.log(e.target.feature)
   let medianIncome2011 = String(Math.round(e.target.feature.properties.median_income_2010))
   let medianIncome2017 = String(Math.round(e.target.feature.properties.median_income_2017))
   const t = L.tooltip({ permanent: false, interactive: true, sticky: false }, e.target)

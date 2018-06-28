@@ -1,5 +1,6 @@
 import json
 import buildings_seeds
+import building_events_seeds
 
 violations_table = 'violations'
 
@@ -51,5 +52,18 @@ def seed_violations(c, violation_json):
     issue_date = violation["issue_date"]
     description = get_description(violation)
     
+    # Create Violation
     c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}) VALUES ({building_id}, \'{issue_date}\', \"{description}\")'\
       .format(tn=violations_table, col1=vio_col1, col2=vio_col2, col3=vio_col3, building_id=building_id, issue_date=issue_date, description=description))
+
+    insertion_id = c.lastrowid
+
+    c.execute('SELECT * FROM {tn} WHERE {cn}={b_id}'\
+      .format(tn=buildings_seeds.buildings_table, cn='id', b_id=building_id))
+
+    building = c.fetchone()
+
+    # Create Building Event
+    c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}, {col4}, {col5}) VALUES ({ct_id}, {n_id}, {building_id}, \'{eventable}\', \"{event_id}\")'\
+      .format(tn=building_events_seeds.building_events_table, col1="census_tract_id", col2="neighborhood_id", col3="building_id", col4="eventable", col5="eventable_id", ct_id=building[6], n_id=building[7], building_id=building_id, eventable='violation', event_id=insertion_id))
+

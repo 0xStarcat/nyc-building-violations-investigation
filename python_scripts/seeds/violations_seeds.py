@@ -53,8 +53,3 @@ def seed_violations(c, violation_json):
     
     c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}) VALUES ({building_id}, \'{issue_date}\', \"{description}\")'\
       .format(tn=violations_table, col1=vio_col1, col2=vio_col2, col3=vio_col3, building_id=building_id, issue_date=issue_date, description=description))
-
-    # c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}) VALUES ({building_id}, \'{issue_date}\', \'{description}\')'\
-    #   .format(tn=violations_table, col1=vio_col1, col2=vio_col2, col3=vio_col3, building_id=building_id, issue_date=issue_date, description=description))
-
-

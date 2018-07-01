@@ -56,5 +56,5 @@ def seed_rents(c, rent_csv):
 
     change_2011_2017 = round(mr_2017 - mr_2011, 2)
 
-    c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}, {col4}, {col5}) VALUES ({ct_id}, {n_id}, {n_id}{mr_2011}, {mr_2017}, {change_2011_2017})'\
+    c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}, {col4}, {col5}) VALUES ({ct_id}, {n_id}, {mr_2011}, {mr_2017}, {change_2011_2017})'\
       .format(tn=rents_table, col1=rent_col1, col2=rent_col2, col3=rent_col3, col4=rent_col4, col5=rent_col5, ct_id=ct_id, n_id=n_id, mr_2011=mr_2011, mr_2017=mr_2017, change_2011_2017=change_2011_2017))

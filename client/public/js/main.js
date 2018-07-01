@@ -1,1 +1,1 @@
-require('./script.js')
+require('./script')

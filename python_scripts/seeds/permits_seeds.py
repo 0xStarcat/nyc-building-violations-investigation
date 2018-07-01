@@ -56,8 +56,8 @@ def seed_permits(c, permit_csv):
       building = c.fetchone()
 
       # Create Building Event
-      c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}, {col4}, {col5}) VALUES ({ct_id}, {n_id}, {building_id}, \'{eventable}\', \"{event_id}\")'\
-        .format(tn=building_events_seeds.building_events_table, col1="census_tract_id", col2="neighborhood_id", col3="building_id", col4="eventable", col5="eventable_id", ct_id=building[6], n_id=building[7], building_id=building_id, eventable='permit', event_id=insertion_id))
+      c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}, {col4}, {col5}, {col6}) VALUES ({ct_id}, {n_id}, {building_id}, \'{eventable}\', \"{event_id}\", \"{event_date}\")'\
+        .format(tn=building_events_seeds.building_events_table, col1="census_tract_id", col2="neighborhood_id", col3="building_id", col4="eventable", col5="eventable_id", col6="event_date", ct_id=building[6], n_id=building[7], building_id=building_id, eventable='permit', event_id=insertion_id, event_date=issue_date))
 
 
 

@@ -15,7 +15,15 @@ const constructCensusTractJson = data => {
           medianIncomeChange20112017: (row.income || {}).median_income_change_2011_2017,
           medianRent2011: (row.rent || {}).median_rent_2011,
           medianRent2017: (row.rent || {}).median_rent_2017,
-          medianRentChange20112017: (row.rent || {}).median_rent_change_2011_2017
+          medianRentChange20112017: (row.rent || {}).median_rent_change_2011_2017,
+          totalBuildings: row.total_buildings,
+          totalViolations: row.total_violations,
+          totalSales: row.total_sales,
+          totalPermits: row.total_permits,
+          totalSalesPriorViolations: row.total_sales_prior_violations,
+          avgSalesPriorViolations: ((row.total_sales_prior_violations / row.total_sales) * 100).toFixed(2),
+          avgViolationCount3YearsBeforeSale: row.avg_violation_count_3years_before_sale,
+          violationsPerBuilding: (row.total_violations / row.total_buildings).toFixed(2)
         }
       }
     })

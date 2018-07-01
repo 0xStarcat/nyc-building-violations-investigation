@@ -6,6 +6,8 @@ col3 = 'total_sales'
 col4 = 'total_permits'
 col5 = 'total_sales_prior_violations'
 col6 = 'avg_violation_count_3years_before_sale'
+col7 = 'total_service_calls'
+col8 = 'total_service_calls_with_violation_result'
 
 def add_columns(c):
   # c.execute("ALTER TABLE {tn} ADD COLUMN {cn} INT"\
@@ -20,14 +22,20 @@ def add_columns(c):
   # c.execute("ALTER TABLE {tn} ADD COLUMN {cn} INT"\
   #   .format(tn=table, cn=col4))
 
-  c.execute("ALTER TABLE {tn} ADD COLUMN {cn} INT"\
-    .format(tn=table, cn=col5))
+  # c.execute("ALTER TABLE {tn} ADD COLUMN {cn} INT"\
+  #   .format(tn=table, cn=col5))
 
-  c.execute("ALTER TABLE {tn} ADD COLUMN {cn} REAL"\
-    .format(tn=table, cn=col6))
+  # c.execute("ALTER TABLE {tn} ADD COLUMN {cn} REAL"\
+  #   .format(tn=table, cn=col6))
+
+  c.execute("ALTER TABLE {tn} ADD COLUMN {cn} INT"\
+    .format(tn=table, cn=col7))
+
+  c.execute("ALTER TABLE {tn} ADD COLUMN {cn} INT"\
+    .format(tn=table, cn=col8))
 
 def migrate_neighborhoods_data(c):
-  add_columns(c)
+  # add_columns(c)
 
   c.execute('SELECT * FROM {tn}'\
     .format(tn=table))
@@ -75,6 +83,29 @@ def migrate_neighborhoods_data(c):
 
     c.execute('UPDATE {tn} SET {cn} = {value} WHERE id={id}'\
       .format(tn=table, cn=col4, value=permits_count, id=row[0]))
+
+    # service calls
+
+    c.execute('SELECT * FROM building_events WHERE eventable=\'{event}\' AND neighborhood_id={id}'\
+      .format(event='service_call', id=row[0]))
+
+    service_calls = c.fetchall()
+    service_calls_count = len(service_calls)
+
+    c.execute('UPDATE {tn} SET {cn} = {value} WHERE id={id}'\
+      .format(tn=table, cn=col7, value=service_calls_count, id=row[0]))
+
+    # service calls with violation result
+    
+    service_calls_violation_result_count = 0
+
+    for event in service_calls:
+      c.execute('SELECT * FROM service_calls WHERE id={id}'.format(id=event[5]))
+      if c.fetchone()[5] == True:
+        service_calls_violation_result_count += 1
+
+    c.execute('UPDATE {tn} SET {cn} = {value} WHERE id={id}'\
+      .format(tn=table, cn=col8, value=service_calls_violation_result_count, id=row[0]))
 
     # Sales w Prior Violations
     # Average violation count in 3 years prior to sale

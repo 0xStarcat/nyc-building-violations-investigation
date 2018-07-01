@@ -15,6 +15,16 @@ def get_description(violation):
     pass
   return description
 
+def get_penalty(violation):
+  penalty_imposed = ""
+  if "penality_imposed" in violation:
+    if violation["penality_imposed"] == ".00":
+      pass
+    else:
+      penalty_imposed = violation["penality_imposed"]
+
+  return penalty_imposed
+
 def get_building_match(c, violation):
   if "block" in violation and "lot" in violation and violation["block"].lstrip("0") and violation["lot"].lstrip("0"):
     c.execute('SELECT * FROM buildings WHERE block={v_block} AND lot={v_lot}'.format(v_block=violation["block"].lstrip("0"), v_lot=violation["lot"].lstrip("0")))
@@ -27,9 +37,10 @@ def seed_violations(c, violation_json):
   vio_col1 = 'building_id'
   vio_col2 = 'issue_date'
   vio_col3 = 'description'
+  vio_col4 = 'penalty_imposed'
 
-  c.execute('CREATE TABLE IF NOT EXISTS {tn} (id INTEGER PRIMARY KEY AUTOINCREMENT, {col1} INTEGER NOT NULL REFERENCES {bldg_table}(id), {col2} TEXT, {col3} TEXT)'\
-    .format(tn=violations_table, col1=vio_col1, col2=vio_col2, col3=vio_col3, bldg_table=buildings_seeds.buildings_table))
+  c.execute('CREATE TABLE IF NOT EXISTS {tn} (id INTEGER PRIMARY KEY AUTOINCREMENT, {col1} INTEGER NOT NULL REFERENCES {bldg_table}(id), {col2} TEXT, {col3} TEXT, {col4} TEXT)'\
+    .format(tn=violations_table, col1=vio_col1, col2=vio_col2, col3=vio_col3, col4=vio_col4, bldg_table=buildings_seeds.buildings_table))
 
   c.execute('CREATE INDEX idx_violation_building_id ON {tn}({col1})'.format(tn=violations_table, col1=vio_col1))
 
@@ -51,10 +62,12 @@ def seed_violations(c, violation_json):
       continue
     issue_date = violation["issue_date"]
     description = get_description(violation)
+
+    penalty_imposed = get_penalty(violation)
     
     # Create Violation
-    c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}) VALUES ({building_id}, \'{issue_date}\', \"{description}\")'\
-      .format(tn=violations_table, col1=vio_col1, col2=vio_col2, col3=vio_col3, building_id=building_id, issue_date=issue_date, description=description))
+    c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}, {col4}) VALUES ({building_id}, \'{issue_date}\', \"{description}\", \'{penalty_imposed}\')'\
+      .format(tn=violations_table, col1=vio_col1, col2=vio_col2, col3=vio_col3, col4=vio_col4, building_id=building_id, issue_date=issue_date, description=description, penalty_imposed=penalty_imposed))
 
     insertion_id = c.lastrowid
 
@@ -64,6 +77,6 @@ def seed_violations(c, violation_json):
     building = c.fetchone()
 
     # Create Building Event
-    c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}, {col4}, {col5}) VALUES ({ct_id}, {n_id}, {building_id}, \'{eventable}\', \"{event_id}\")'\
-      .format(tn=building_events_seeds.building_events_table, col1="census_tract_id", col2="neighborhood_id", col3="building_id", col4="eventable", col5="eventable_id", ct_id=building[6], n_id=building[7], building_id=building_id, eventable='violation', event_id=insertion_id))
+    c.execute('INSERT OR IGNORE INTO {tn} ({col1}, {col2}, {col3}, {col4}, {col5}, {col6}) VALUES ({ct_id}, {n_id}, {building_id}, \'{eventable}\', \"{event_id}\", \"{event_date}\")'\
+      .format(tn=building_events_seeds.building_events_table, col1="census_tract_id", col2="neighborhood_id", col3="building_id", col4="eventable", col5="eventable_id", col6="event_date", ct_id=building[6], n_id=building[7], building_id=building_id, eventable='violation', event_id=insertion_id, event_date=issue_date))
 

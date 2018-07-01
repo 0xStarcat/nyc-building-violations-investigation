@@ -10,6 +10,7 @@ import incomes_seeds
 import rents_seeds
 import sales_seeds
 import permits_seeds
+import service_calls_seeds
 import building_events_seeds
 
 sqlite_file = 'bk_building_violation_project.sqlite'
@@ -21,6 +22,7 @@ c.execute('pragma foreign_keys=on;')
 
 def drop_tables():
   c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=building_events_seeds.building_events_table))
+  c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=service_calls_seeds.service_calls_table))
   c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=permits_seeds.permits_table))
   c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=sales_seeds.sales_table))
   c.execute('DROP TABLE IF EXISTS {tn}'.format(tn=violations_seeds.violations_table))
@@ -39,6 +41,7 @@ def drop_tables():
 # violations_json = json.load(open('data/violations_data/bk_violation_data_2008_2017.json'))
 # sales_csv = list(csv.reader(open("data/sales_data/bk_property_sales_2011_2017.csv")))[1:]
 # permits_csv = list(csv.reader(open("data/permit_data/processed_bk_permit_data_2011_2017.csv")))[1:]
+# service_calls_csv = list(csv.reader(open("data/service_calls/bk_dob_311_Service_Requests_from_2010_to_Present.csv")))[1:]
 
 
 
@@ -51,13 +54,14 @@ def drop_tables():
 # violations_seeds.seed_violations(c, violations_json)
 # sales_seeds.seed_sales(c, sales_csv)
 # permits_seeds.seed_permits(c, permits_csv)
+# service_calls_seeds.seed_service_calls(c, service_calls_csv)
 
 print("Seeding complete.")
 
 # Test DB
-c.execute('SELECT * FROM building_events')
+c.execute('SELECT * FROM census_tracts')
 all_rows = c.fetchall()
-print(str(len(all_rows)))
+print(all_rows[:4])
 
 
 conn.commit()

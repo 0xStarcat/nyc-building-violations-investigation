@@ -27,6 +27,7 @@ db.Building = sequelize.import('./Building.js')
 db.Violation = sequelize.import('./Violation.js')
 db.Sale = sequelize.import('./Sale.js')
 db.Permit = sequelize.import('./Permit.js')
+db.ServiceCall = sequelize.import('./ServiceCall.js')
 db.BuildingEvent = sequelize.import('./BuildingEvent.js')
 
 // http://docs.sequelizejs.com/manual/tutorial/associations.html
@@ -54,6 +55,7 @@ db.Building.belongsTo(db.CensusTract, { foreignKey: 'census_tract_id', targetKey
 db.Building.hasMany(db.Sale, { foreignKey: 'building_id', sourceKey: 'id' })
 db.Building.hasMany(db.Permit, { foreignKey: 'building_id', sourceKey: 'id' })
 db.Building.hasMany(db.Violation, { foreignKey: 'building_id', sourceKey: 'id' })
+db.Building.hasMany(db.ServiceCall, { foreignKey: 'building_id', sourceKey: 'id' })
 
 db.Income.belongsTo(db.Neighborhood, { foreignKey: 'neighborhood_id', targetKey: 'id' })
 db.Income.belongsTo(db.CensusTract, { foreignKey: 'census_tract_id', targetKey: 'id' })
@@ -64,14 +66,40 @@ db.Rent.belongsTo(db.CensusTract, { foreignKey: 'census_tract_id', targetKey: 'i
 db.Sale.belongsTo(db.Building, { foreignKey: 'building_id', targetKey: 'id' })
 
 db.Permit.belongsTo(db.Building, { foreignKey: 'building_id', targetKey: 'id' })
+db.ServiceCall.belongsTo(db.Building, { foreignKey: 'building_id', targetKey: 'id' })
 
 db.Violation.belongsTo(db.Building, { foreignKey: 'building_id', targetKey: 'id' })
 db.Violation.belongsTo(db.BuildingEvent, { foreignKey: 'eventable_id', constraints: false, as: 'violation' })
+
 db.BuildingEvent.hasMany(db.Violation, {
   foreignKey: 'eventable_id',
   constraints: false,
   scope: {
     eventable: 'violation'
+  }
+})
+
+db.BuildingEvent.hasMany(db.Sale, {
+  foreignKey: 'eventable_id',
+  constraints: false,
+  scope: {
+    eventable: 'sale'
+  }
+})
+
+db.BuildingEvent.hasMany(db.Permit, {
+  foreignKey: 'eventable_id',
+  constraints: false,
+  scope: {
+    eventable: 'permit'
+  }
+})
+
+db.BuildingEvent.hasMany(db.ServiceCall, {
+  foreignKey: 'eventable_id',
+  constraints: false,
+  scope: {
+    eventable: 'service_call'
   }
 })
 

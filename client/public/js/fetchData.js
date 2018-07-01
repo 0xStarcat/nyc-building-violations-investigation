@@ -1,18 +1,16 @@
 import axios from 'axios'
-import Promise from 'bluebird'
-
 import Store from './store'
 
 export const getAllNeighborhoods = async () => {
   await axios.get('/neighborhoods').then(response => {
-    console.log(response.data)
+    // console.log(response.data)
     Store.boundaryData.neighborhoods = response.data
   })
 }
 
 export const getAllCensusTracts = async () => {
   await axios.get('/tracts').then(response => {
-    console.log(response.data)
+    // console.log(response.data)
     Store.boundaryData.censusTracts = response.data
   })
 }

@@ -1,27 +1,13 @@
 import { fetchData } from './fetchData'
-import { styleIncomeLayers, styleViolationsPerBuildingLayers } from './geojsonHelpers.js'
+import { setupMap } from './map/map.js'
 import Store from './store'
 
 /* eslint-disable */
-var map = L.map('map').setView({ lat: 40.7081, lon: -73.9571 }, 13)
-
-L.tileLayer(
-  'https://api.tiles.mapbox.com/v4/mapbox.wheatpaste/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RhcmNhdCIsImEiOiJjamlpYmlsc28wbjlmM3FwbXdwaXozcWEzIn0.kLmWiUbmdqNLA1atmnTXXA',
-  {
-    attribution:
-      'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox.wheatpaste',
-    accessToken: 'pk.eyJ1Ijoic3RhcmNhdCIsImEiOiJjamlpYmlsc28wbjlmM3FwbXdwaXozcWEzIn0.kLmWiUbmdqNLA1atmnTXXA'
-  }
-).addTo(map)
-
-setTimeout(() => map.invalidateSize(), 1)
 
 fetchData()
   .then(() => {
     console.log('fetch complete')
-    setupGeoJsonBoundaries()
+    setupMap()
     // setupMapMarkers()
     console.log('setup complete')
   })
@@ -39,11 +25,22 @@ const geojsonMarkerOptions = {
 }
 
 const setupGeoJsonBoundaries = () => {
-  console.log(Store)
-  L.geoJSON(Store.boundaryData.censusTracts, {
-    onEachFeature: onCensusTractFeatureEach,
-    style: styleIncomeLayers
-  }).addTo(map)
+  var map = L.map('map', { layers: [mapLayers.Rent] }).setView({ lat: 40.6881, lon: -73.9671 }, 13)
+
+  L.tileLayer(
+    'https://api.tiles.mapbox.com/v4/mapbox.wheatpaste/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RhcmNhdCIsImEiOiJjamlpYmlsc28wbjlmM3FwbXdwaXozcWEzIn0.kLmWiUbmdqNLA1atmnTXXA',
+    {
+      attribution:
+        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.wheatpaste',
+      accessToken: 'pk.eyJ1Ijoic3RhcmNhdCIsImEiOiJjamlpYmlsc28wbjlmM3FwbXdwaXozcWEzIn0.kLmWiUbmdqNLA1atmnTXXA'
+    }
+  ).addTo(map)
+
+  setTimeout(() => map.invalidateSize(), 1)
+
+  L.control.layers(mapLayers).addTo(map)
 
   L.geoJSON(Store.boundaryData.neighborhoods, {
     onEachFeature: onNeighborhoodFeatureEach,
@@ -91,48 +88,6 @@ function onCensusTractFeatureEach(feature, layer) {
     mouseover: onCensusTrackMouseover,
     mouseout: onCensusTractMouseout
   })
-}
-
-const onCensusTractMouseout = e => {
-  // e.target.closeTooltip();
-}
-
-const onCensusTrackMouseover = e => {
-  e.target
-    .bindTooltip(
-      'Neighborhood: ' + e.target.feature.properties.neighborhood,
-      { permanent: false, interactive: false, sticky: false, offset: [0, -50], direction: 'top' },
-      e.target
-    )
-    .openTooltip()
-}
-
-function onCensusTractClick(e) {
-  console.log(e.target.feature)
-  let medianIncome2011 = String(Math.round(e.target.feature.properties.median_income_2010))
-  let medianIncome2017 = String(Math.round(e.target.feature.properties.median_income_2017))
-  const t = L.tooltip({ permanent: false, interactive: true, sticky: false }, e.target)
-    .setLatLng(e.latlng)
-    .setContent(
-      'Census Tract: ' +
-        e.target.feature.properties.name +
-        '<br/>' +
-        'Neighborhood: ' +
-        e.target.feature.properties.neighborhood +
-        '<br/>' +
-        'Median Income 2011: ' +
-        medianIncome2011 +
-        '<br/>' +
-        'Median Income 2017: ' +
-        medianIncome2017 +
-        '<br/>' +
-        'Total Buildings: ' +
-        e.target.feature.properties['totalBuildings'] +
-        '<br/>' +
-        'Violation Per Bldg: ' +
-        e.target.feature.properties['violationsPerBuilding']
-    )
-    .addTo(map)
 }
 
 function onNeighborhoodFeatureEach(feature, layer) {

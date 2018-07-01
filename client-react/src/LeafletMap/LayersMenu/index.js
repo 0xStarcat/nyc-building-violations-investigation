@@ -1,8 +1,18 @@
 import React, { Component } from 'react'
-import { Circle, FeatureGroup, LayerGroup, LayersControl, Marker, Popup, Rectangle, TileLayer } from 'react-leaflet'
+import {
+  Circle,
+  FeatureGroup,
+  LayerGroup,
+  LayersControl,
+  Marker,
+  Popup,
+  Rectangle,
+  GeoJSON,
+  TileLayer
+} from 'react-leaflet'
 const { BaseLayer, Overlay } = LayersControl
 
-export default class LayersControlExample extends Component {
+export default class LayersMenu extends Component {
   constructor(props) {
     super(props)
   }
@@ -12,17 +22,39 @@ export default class LayersControlExample extends Component {
 
     return (
       <LayersControl position={this.props.position}>
-        <BaseLayer checked name="OpenStreetMap.Mapnik">
-          <TileLayer
-            attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+        <BaseLayer checked name="Census Tracts">
+          <LayerGroup>
+            {this.props.store.censusTracts.features.map((feature, index) => {
+              return (
+                <GeoJSON
+                  key={`ct-${index}`}
+                  color="white"
+                  opacity={1}
+                  weight={1}
+                  fillOpacity={0.7}
+                  fillColor="pink"
+                  data={feature['geometry']}
+                />
+              )
+            })}
+          </LayerGroup>
         </BaseLayer>
-        <BaseLayer name="OpenStreetMap.BlackAndWhite">
-          <TileLayer
-            attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-            url="https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
-          />
+        <BaseLayer name="Census Tracts 2011">
+          <LayerGroup>
+            {this.props.store.censusTracts.features.map((feature, index) => {
+              return (
+                <GeoJSON
+                  key={`ct-${index}`}
+                  color="white"
+                  opacity={1}
+                  weight={1}
+                  fillOpacity={0.7}
+                  fillColor="pink"
+                  data={feature['geometry']}
+                />
+              )
+            })}
+          </LayerGroup>
         </BaseLayer>
         <Overlay name="Marker with popup">
           <Marker position={center}>

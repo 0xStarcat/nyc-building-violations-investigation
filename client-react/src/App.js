@@ -11,7 +11,7 @@ class App extends Component {
     if (!this.props.store.censusTracts.initialFetchCompleted) return null
     return (
       <div className="App">
-        <LeafletMap position={{ lat: 40.6881, lng: -73.9671 }} zoom={13} />
+        <LeafletMap position={{ lat: 40.6881, lng: -73.9671 }} zoom={13} store={this.props.store} />
       </div>
     )
   }

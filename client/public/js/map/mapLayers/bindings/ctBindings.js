@@ -1,10 +1,8 @@
 import L from '../../../engines/leaflet/leaflet'
-import { addStackMarkers } from '../censusTractLayers'
 
 import Store from '../../../store'
 
 export const onCensusTractFeatureEach = (feature, layer) => {
-  // addStackMarkers()
   layer.on({
     click: onCensusTractClick,
     mouseover: onCensusTrackMouseover

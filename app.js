@@ -7,7 +7,17 @@ app.engine('html', mustache())
 app.set('view engine', 'html')
 app.set('views', __dirname + '/client/views')
 app.use('/', express.static(__dirname + '/client/public'))
-
+app.use((req, res, next) => {
+  res.set({
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Credentials': true,
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
+    'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE'
+  })
+  next()
+})
 const neighborhoods = require('./routes/neighborhoodRoutes')
 const census_tracts = require('./routes/censusTractRoutes')
 

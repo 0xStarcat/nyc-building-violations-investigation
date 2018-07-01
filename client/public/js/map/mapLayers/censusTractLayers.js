@@ -11,6 +11,8 @@ import { totalPermitsStyle } from './styles/totalPermitsStyle.js'
 import { totalSalesPriorViolationsStyle } from './styles/totalSalesPriorViolationsStyle.js'
 import { avgSalesPriorViolationsStyle } from './styles/avgSalesPriorViolationsStyle.js'
 import { avgViolations3YearsBeforeSaleStyle } from './styles/avgViolations3YearsBeforeSaleStyle.js'
+import { totalServiceCallsStyle } from './styles/totalServiceCallsStyle.js'
+import { percentServiceCallsWithViolationStyle } from './styles/percentServiceCallsWithViolationStyle'
 
 import { onCensusTractFeatureEach } from './bindings/ctBindings.js'
 export const ctIncomeLayer = () => {
@@ -37,7 +39,6 @@ export const ctRentLayer = () => {
 }
 
 export const addStackMarkers = () => {
-  console.log('hi')
   var myCenter = new L.LatLng(40.6881, -73.9671)
   Store.stack = L.marker.stack(myCenter, {
     icons: [
@@ -102,5 +103,19 @@ export const ctViolations3YearsBeforeSale = () => {
   return L.geoJSON(Store.boundaryData.censusTracts, {
     onEachFeature: onCensusTractFeatureEach,
     style: avgViolations3YearsBeforeSaleStyle
+  })
+}
+
+export const ctTotalServiceCalls = () => {
+  return L.geoJSON(Store.boundaryData.censusTracts, {
+    onEachFeature: onCensusTractFeatureEach,
+    style: totalServiceCallsStyle
+  })
+}
+
+export const ctPercentServiceCallsWithViolation = () => {
+  return L.geoJSON(Store.boundaryData.censusTracts, {
+    onEachFeature: onCensusTractFeatureEach,
+    style: percentServiceCallsWithViolationStyle
   })
 }

@@ -61,7 +61,7 @@ print("Seeding complete.")
 # Test DB
 c.execute('SELECT * FROM census_tracts')
 all_rows = c.fetchall()
-print(all_rows[:4])
+print(all_rows[0])
 
 
 conn.commit()

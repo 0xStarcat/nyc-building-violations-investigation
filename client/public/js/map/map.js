@@ -11,6 +11,8 @@ import {
   ctTotalSalesPriorViolations,
   ctAvgSalesPriorViolations,
   ctViolations3YearsBeforeSale,
+  ctTotalServiceCalls,
+  ctPercentServiceCallsWithViolation,
   addStackMarkers,
   removeStackMarkers
 } from './mapLayers/censusTractLayers.js'
@@ -27,6 +29,8 @@ export const setupMap = () => {
     'Median Rent, 2017': ctRentLayer(),
     'Rent Change, 2011 - 2017': ctRentChangeLayer(),
     'Violations per Building, 2011 - 2017': ctViolationPerBuildingLayer(),
+    'Total Service Calls, 2011 - 2017': ctTotalServiceCalls(),
+    'Percent Service Calls with Violation': ctPercentServiceCallsWithViolation(),
     'Total Sales, 2011 - 2017': ctTotalSales(),
     'Total Sales with Prior Violations, 2011-2017': ctTotalSalesPriorViolations(),
     'Avg Sales with Prior Violations, 2011-2017': ctAvgSalesPriorViolations(),
@@ -53,7 +57,6 @@ export const setupMap = () => {
 
   L.control.layers(switchLayers, toggleLayers).addTo(Store.map)
   Store.map.on('baselayerchange', event => {
-    debugger
     removeStackMarkers()
     event.layer.bringToBack()
   })

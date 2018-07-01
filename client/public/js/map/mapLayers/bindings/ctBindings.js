@@ -71,7 +71,14 @@ const onCensusTractClick = e => {
         e.target.feature.properties['totalPermits'] +
         '<br/>' +
         'Avg violation over 3 years before sale: ' +
-        e.target.feature.properties['avgViolationCount3YearsBeforeSale']
+        e.target.feature.properties['avgViolationCount3YearsBeforeSale'] +
+        '<br/>' +
+        'Total service calls: ' +
+        e.target.feature.properties['totalServiceCalls'] +
+        '<br/>' +
+        '% service calls resulting in violation: ' +
+        e.target.feature.properties['percentServiceCallsWithViolation'] +
+        '%'
     )
     .addTo(Store.map)
 }

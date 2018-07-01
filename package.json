@@ -7,9 +7,11 @@
     "webpack": "webpack --watch --mode=development",
     "nodemon": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js | webpack --watch --mode=development",
-    "start": "npm run-script build && node server.js",
-    "build": "webpack --mode production"
+    "dev": "nodemon server.js | react-scripts start --development",
+    "start": "react-scripts build && node server.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "author": "",
   "license": "ISC",
@@ -21,7 +23,10 @@
     "mustache-express": "^1.2.6",
     "nodemon": "^1.17.5",
     "sequelize": "^4.38.0",
-    "sqlite3": "^4.0.1"
+    "sqlite3": "^4.0.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-scripts": "1.1.4"
   },
   "devDependencies": {
     "css-loader": "^0.28.11",

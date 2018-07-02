@@ -66,7 +66,9 @@ export default class LayersMenu extends Component {
                     feature.properties.medianIncomeChange20112017,
                     feature.properties.totalBuildings
                   )}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>
@@ -79,7 +81,9 @@ export default class LayersMenu extends Component {
                   key={`ct-${index}`}
                   data={feature['geometry']}
                   {...rentMedianLayerStyle(feature.properties.medianRent2017, feature.properties.totalBuildings)}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>
@@ -95,7 +99,9 @@ export default class LayersMenu extends Component {
                     feature.properties.medianRentChange20112017,
                     feature.properties.totalBuildings
                   )}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>
@@ -111,7 +117,9 @@ export default class LayersMenu extends Component {
                     feature.properties.violationsPerBuilding,
                     feature.properties.totalBuildings
                   )}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>
@@ -127,7 +135,9 @@ export default class LayersMenu extends Component {
                     feature.properties.totalServiceCalls,
                     feature.properties.totalBuildings
                   )}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>
@@ -143,7 +153,9 @@ export default class LayersMenu extends Component {
                     feature.properties.percentServiceCallsWithViolation,
                     feature.properties.totalBuildings
                   )}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>
@@ -156,7 +168,9 @@ export default class LayersMenu extends Component {
                   key={`ct-${index}`}
                   data={feature['geometry']}
                   {...salesTotalLayerStyle(feature.properties.totalSales, feature.properties.totalBuildings)}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>
@@ -172,7 +186,9 @@ export default class LayersMenu extends Component {
                     feature.properties.totalSalesPriorViolations,
                     feature.properties.totalBuildings
                   )}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>
@@ -188,7 +204,9 @@ export default class LayersMenu extends Component {
                     feature.properties.avgSalesPriorViolations,
                     feature.properties.totalBuildings
                   )}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>
@@ -205,11 +223,7 @@ export default class LayersMenu extends Component {
                     feature.properties.totalBuildings
                   )}
                 >
-                  <Popup>
-                    <div>
-                      A pretty CSS3 popup. <br /> Easily customizable.
-                    </div>
-                  </Popup>
+                  <CensusTractPopup feature={feature} />
                 </GeoJSON>
               )
             })}
@@ -223,7 +237,9 @@ export default class LayersMenu extends Component {
                   key={`ct-${index}`}
                   data={feature['geometry']}
                   {...permitsTotalLayerStyle(feature.properties.totalPermits, feature.properties.totalBuildings)}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>

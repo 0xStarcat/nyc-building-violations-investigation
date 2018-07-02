@@ -26,6 +26,7 @@ import {
   permitsTotalLayerStyle
 } from '../GeoJsonStyles'
 
+import NeighborhoodsBoundary from './NeighborhoodsBoundary'
 import CensusTractPopup from '../Popups/CensusTractPopup'
 const { BaseLayer, Overlay } = LayersControl
 
@@ -39,7 +40,13 @@ export default class LayersMenu extends Component {
     const rectangle = [[51.49, -0.08], [51.5, -0.06]]
 
     return (
-      <LayersControl position={this.props.position}>
+      <LayersControl
+        autoZIndex={true}
+        sortLayers={true}
+        collapsed={false}
+        ref={this.props.layerControlRef}
+        position={this.props.position}
+      >
         <BaseLayer checked name="Median Income, 2017">
           <LayerGroup>
             {this.props.store.censusTracts.features.map((feature, index) => {
@@ -237,30 +244,16 @@ export default class LayersMenu extends Component {
                   key={`ct-${index}`}
                   data={feature['geometry']}
                   {...permitsTotalLayerStyle(feature.properties.totalPermits, feature.properties.totalBuildings)}
-                >
-                  <CensusTractPopup feature={feature} />
-                </GeoJSON>
+                />
               )
             })}
           </LayerGroup>
         </BaseLayer>
-        <Overlay checked name="Layer group with circles">
-          <LayerGroup>
-            <Circle center={center} fillColor="blue" radius={200} />
-            <Circle center={center} fillColor="red" radius={100} stroke={false} />
-            <LayerGroup>
-              <Circle center={[51.51, -0.08]} color="green" fillColor="green" radius={100} />
-            </LayerGroup>
-          </LayerGroup>
-        </Overlay>
-        <Overlay name="Feature group">
-          <FeatureGroup color="purple">
-            <Popup>
-              <span>Popup in FeatureGroup</span>
-            </Popup>
-            <Circle center={[51.51, -0.06]} radius={200} />
-            <Rectangle bounds={rectangle} />
-          </FeatureGroup>
+        <Overlay ref={this.props.neighborhoodOverlayRef} checked name="zNeighborhood Boundaries">
+          <NeighborhoodsBoundary
+            neighborhoodLayerGroupRef={this.props.neighborhoodLayerGroupRef}
+            store={this.props.store}
+          />
         </Overlay>
       </LayersControl>
     )

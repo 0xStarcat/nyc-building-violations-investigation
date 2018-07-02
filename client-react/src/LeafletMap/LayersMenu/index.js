@@ -25,12 +25,15 @@ import {
   violationsCountBeforeSaleLayerStyle,
   permitsTotalLayerStyle
 } from '../GeoJsonStyles'
+
+import CensusTractPopup from '../Popups/CensusTractPopup'
 const { BaseLayer, Overlay } = LayersControl
 
 export default class LayersMenu extends Component {
   constructor(props) {
     super(props)
   }
+
   render() {
     const center = [51.505, -0.09]
     const rectangle = [[51.49, -0.08], [51.5, -0.06]]
@@ -45,7 +48,9 @@ export default class LayersMenu extends Component {
                   key={`ct-${index}`}
                   data={feature['geometry']}
                   {...incomeMedianLayerStyle(feature.properties.medianIncome2017, feature.properties.totalBuildings)}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>
@@ -199,7 +204,13 @@ export default class LayersMenu extends Component {
                     feature.properties.avgViolationCount3YearsBeforeSale,
                     feature.properties.totalBuildings
                   )}
-                />
+                >
+                  <Popup>
+                    <div>
+                      A pretty CSS3 popup. <br /> Easily customizable.
+                    </div>
+                  </Popup>
+                </GeoJSON>
               )
             })}
           </LayerGroup>

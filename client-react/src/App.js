@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SideBar from './SideBar'
-import LeafletMap from './LeafletMap'
+import MapPage from './Pages/MapPage'
 import { readCensusTracts } from './Store/CensusTracts/actions'
 import { readNeighborhoods } from './Store/Neighborhoods/actions'
+
+import { history } from './Store/store'
+import { Router, Switch, Route } from 'react-router'
 
 class App extends Component {
   componentWillMount() {
@@ -13,11 +16,16 @@ class App extends Component {
 
   render() {
     if (!(this.props.store.censusTracts.initialFetchCompleted || this.props.store.neighborhoods.initialFetchCompleted))
-      return null
+      return <div>Loading</div>
     return (
       <div className="App">
         <SideBar />
-        <LeafletMap position={{ lat: 40.6881, lng: -73.9671 }} zoom={13} store={this.props.store} />
+        <Router history={history}>
+          <Switch>
+            <Route exact path="/" render={routeProps => <MapPage store={this.props.store} />} />
+            <Route exact path="/charts" render={routeProps => <MapPage store={this.props.store} />} />
+          </Switch>
+        </Router>
       </div>
     )
   }

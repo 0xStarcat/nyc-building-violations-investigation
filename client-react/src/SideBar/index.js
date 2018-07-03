@@ -1,12 +1,13 @@
 import React from 'react'
-import Link from '../SharedComponents/Link'
+import AppLink from '../SharedComponents/AppLink'
 
 import './style.scss'
 
 const SideBar = () => {
   return (
     <div id="sidebar">
-      <Link href="charts">Charts</Link>
+      <AppLink href="">Map</AppLink>
+      <AppLink href="charts">Charts</AppLink>
     </div>
   )
 }

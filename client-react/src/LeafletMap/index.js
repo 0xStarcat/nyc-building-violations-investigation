@@ -23,13 +23,14 @@ export default class LeafletMap extends Component {
   }
 
   bringNeighborhoodsToFront() {
+    neighborhoodLayerGroupRef.current.leafletElement.setZIndex(1000)
     this.neighborhoodLayerGroupRef.current.leafletElement.eachLayer(layer => {
       if (layer._map) layer.bringToFront()
     })
   }
 
   onBaseLayerChange(event) {
-    if (this.neighborhoodOverlayRef.current.props.checked) this.bringNeighborhoodsToFront()
+    setTimeout(this.bringNeighborhoodsToFront(), 10)
   }
 
   render() {
@@ -40,6 +41,7 @@ export default class LeafletMap extends Component {
         id="leaflet-map"
         center={position}
         zoom={this.state.zoom}
+        onLoad={this.onBaseLayerChange}
         onBaseLayerChange={this.onBaseLayerChange}
       >
         <TileLayer

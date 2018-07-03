@@ -27,6 +27,14 @@ const constructCensusTractJson = data => {
             (row.total_service_calls_with_violation_result / row.total_service_calls) *
             100
           ).toFixed(2),
+          percentServiceCallsNoAction: (
+            (row.total_service_calls_with_no_action_result / row.total_service_calls) *
+            100
+          ).toFixed(2),
+          percentServiceCallsUnresolved: (
+            (row.total_service_calls_unresolved_result / row.total_service_calls) *
+            100
+          ).toFixed(2),
           totalSalesPriorViolations: row.total_sales_prior_violations,
           avgSalesPriorViolations: ((row.total_sales_prior_violations / row.total_sales) * 100).toFixed(2),
           avgViolationCount3YearsBeforeSale: row.avg_violation_count_3years_before_sale,

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SideBar from './SideBar'
 import MapPage from './Pages/MapPage'
+import ChartPage from './Pages/ChartPage'
+
 import { readCensusTracts } from './Store/CensusTracts/actions'
 import { readNeighborhoods } from './Store/Neighborhoods/actions'
 
@@ -19,11 +21,10 @@ class App extends Component {
       return <div>Loading</div>
     return (
       <div className="App">
-        <SideBar />
         <Router history={history}>
           <Switch>
             <Route exact path="/" render={routeProps => <MapPage store={this.props.store} />} />
-            <Route exact path="/charts" render={routeProps => <MapPage store={this.props.store} />} />
+            <Route exact path="/charts" render={routeProps => <ChartPage store={this.props.store} />} />
           </Switch>
         </Router>
       </div>

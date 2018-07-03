@@ -8,7 +8,8 @@ import {
   Popup,
   Rectangle,
   GeoJSON,
-  TileLayer
+  TileLayer,
+  Pane
 } from 'react-leaflet'
 
 import {
@@ -42,7 +43,7 @@ export default class LayersMenu extends Component {
     const rectangle = [[51.49, -0.08], [51.5, -0.06]]
 
     return (
-      <LayersControl collapsed={false} ref={this.props.layerControlRef} position={this.props.position}>
+      <LayersControl collapsed={true} ref={this.props.layerControlRef} position={this.props.position}>
         <BaseLayer checked name="Median Income, 2017">
           <LayerGroup>
             {this.props.store.censusTracts.features.map((feature, index) => {
@@ -281,10 +282,12 @@ export default class LayersMenu extends Component {
           </LayerGroup>
         </BaseLayer>
         <Overlay ref={this.props.neighborhoodOverlayRef} checked name="Neighborhood Boundaries">
-          <NeighborhoodsBoundary
-            neighborhoodLayerGroupRef={this.props.neighborhoodLayerGroupRef}
-            store={this.props.store}
-          />
+          <Pane style={{ zIndex: 400 }}>
+            <NeighborhoodsBoundary
+              neighborhoodLayerGroupRef={this.props.neighborhoodLayerGroupRef}
+              store={this.props.store}
+            />
+          </Pane>
         </Overlay>
       </LayersControl>
     )

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import SideBar from './SideBar'
 import LeafletMap from './LeafletMap'
 import { readCensusTracts } from './Store/CensusTracts/actions'
 import { readNeighborhoods } from './Store/Neighborhoods/actions'
@@ -15,6 +16,7 @@ class App extends Component {
       return null
     return (
       <div className="App">
+        <SideBar />
         <LeafletMap position={{ lat: 40.6881, lng: -73.9671 }} zoom={13} store={this.props.store} />
       </div>
     )

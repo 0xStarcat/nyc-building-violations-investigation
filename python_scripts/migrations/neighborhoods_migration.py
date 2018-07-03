@@ -239,6 +239,7 @@ def migrate_neighborhoods_data(c):
     # c.execute('UPDATE {tn} SET {cn} = {value} WHERE id={id}'\
     #   .format(tn=table, cn=col6, value=avg_violation_count_before_sale, id=row[0]))
 
+    # racial makeups
 
     c.execute('UPDATE {tn} SET {cn} = {value} WHERE id={id}'\
       .format(tn=table, cn=col11, value=find_racial_makeup(c, row), id=row[0]))

@@ -22,6 +22,10 @@ const CensusTractPopup = props => {
         <br />
         Median Rent Change 2011 - 2017: {props.feature.properties.medianRentChange20112017}
         <br />
+        % White 2016: {props.feature.properties.raceWhitePercent2016}
+        <br />
+        % White Change 2011 - 2016: {props.feature.properties.raceWhitePercentChange20112016}
+        <br />
         Total Buildings: {props.feature.properties.totalBuildings}
         <br />
         Violation Per Bldg: {props.feature.properties.violationsPerBuilding}

@@ -19,6 +19,7 @@ const db = {
   sequelize: sequelize
 }
 
+db.RacialMakeup = sequelize.import('./RacialMakeup.js')
 db.Neighborhood = sequelize.import('./Neighborhood.js')
 db.CensusTract = sequelize.import('./CensusTract.js')
 db.Income = sequelize.import('./Income.js')
@@ -41,9 +42,11 @@ db.BuildingEvent.prototype.getItem = function(options) {
   ](options)
 }
 
+db.Neighborhood.belongsTo(db.RacialMakeup, { foreignKey: 'racial_makeup_id', targetKey: 'id' })
 db.Neighborhood.hasMany(db.CensusTract, { foreignKey: 'neighborhood_id', sourceKey: 'id' })
 db.Neighborhood.hasMany(db.Building, { foreignKey: 'neighborhood_id', sourceKey: 'id' })
 
+db.CensusTract.belongsTo(db.RacialMakeup, { foreignKey: 'racial_makeup_id', targetKey: 'id' })
 db.CensusTract.belongsTo(db.Neighborhood, { foreignKey: 'neighborhood_id', targetKey: 'id' })
 db.CensusTract.hasMany(db.Building, { foreignKey: 'census_tract_id', sourceKey: 'id' })
 db.CensusTract.hasMany(db.BuildingEvent, { foreignKey: 'census_tract_id', sourceKey: 'id' })
@@ -56,6 +59,9 @@ db.Building.hasMany(db.Sale, { foreignKey: 'building_id', sourceKey: 'id' })
 db.Building.hasMany(db.Permit, { foreignKey: 'building_id', sourceKey: 'id' })
 db.Building.hasMany(db.Violation, { foreignKey: 'building_id', sourceKey: 'id' })
 db.Building.hasMany(db.ServiceCall, { foreignKey: 'building_id', sourceKey: 'id' })
+
+db.RacialMakeup.hasOne(db.CensusTract, { foreignKey: 'racial_makeup_id', sourceKey: 'id' })
+db.RacialMakeup.hasOne(db.Neighborhood, { foreignKey: 'racial_makeup_id', sourceKey: 'id' })
 
 db.Income.belongsTo(db.Neighborhood, { foreignKey: 'neighborhood_id', targetKey: 'id' })
 db.Income.belongsTo(db.CensusTract, { foreignKey: 'census_tract_id', targetKey: 'id' })

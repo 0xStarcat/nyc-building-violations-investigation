@@ -23,7 +23,9 @@ import {
   salesWithViolationTotalLayerStyle,
   salesWithViolationPercentLayerStyle,
   violationsCountBeforeSaleLayerStyle,
-  permitsTotalLayerStyle
+  permitsTotalLayerStyle,
+  raceWhitePercent2016,
+  raceWhitePercentChange
 } from '../GeoJsonStyles'
 
 import NeighborhoodsBoundary from './NeighborhoodsBoundary'
@@ -238,6 +240,39 @@ export default class LayersMenu extends Component {
                   key={`ct-${index}`}
                   data={feature['geometry']}
                   {...permitsTotalLayerStyle(feature.properties.totalPermits, feature.properties.totalBuildings)}
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
+              )
+            })}
+          </LayerGroup>
+        </BaseLayer>
+        <BaseLayer name="% White 2016">
+          <LayerGroup>
+            {this.props.store.censusTracts.features.map((feature, index) => {
+              return (
+                <GeoJSON
+                  key={`ct-${index}`}
+                  data={feature['geometry']}
+                  {...raceWhitePercent2016(feature.properties.raceWhitePercent2016, feature.properties.totalBuildings)}
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
+              )
+            })}
+          </LayerGroup>
+        </BaseLayer>
+        <BaseLayer name="% White Change 2011 - 2016">
+          <LayerGroup>
+            {this.props.store.censusTracts.features.map((feature, index) => {
+              return (
+                <GeoJSON
+                  key={`ct-${index}`}
+                  data={feature['geometry']}
+                  {...raceWhitePercentChange(
+                    feature.properties.raceWhitePercentChange20112016,
+                    feature.properties.totalBuildings
+                  )}
                 >
                   <CensusTractPopup feature={feature} />
                 </GeoJSON>

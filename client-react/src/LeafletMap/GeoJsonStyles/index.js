@@ -10,3 +10,5 @@ export { default as salesWithViolationTotalLayerStyle } from './salesWithViolati
 export { default as salesWithViolationPercentLayerStyle } from './salesWithViolationPercentLayerStyle'
 export { default as violationsCountBeforeSaleLayerStyle } from './violationsCountBeforeSaleLayerStyle'
 export { default as permitsTotalLayerStyle } from './permitsTotalLayerStyle'
+export { default as raceWhitePercent2016 } from './raceWhitePercent2016'
+export { default as raceWhitePercentChange } from './raceWhitePercentChange'

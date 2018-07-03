@@ -43,6 +43,18 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.INTEGER,
         field: 'total_service_calls_with_violation_result'
       },
+      total_service_calls_with_no_action_result: {
+        type: DataTypes.INTEGER,
+        field: 'total_service_calls_with_no_action_result'
+      },
+      total_service_calls_unresolved_result: {
+        type: DataTypes.INTEGER,
+        field: 'total_service_calls_unresolved_result'
+      },
+      racial_makeup_id: {
+        type: DataTypes.INTEGER,
+        field: 'racial_makeup_id'
+      },
       total_sales_prior_violations: {
         type: DataTypes.INTEGER,
         field: 'total_sales_prior_violations'

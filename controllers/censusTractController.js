@@ -15,6 +15,9 @@ const constructCensusTractJson = data => {
           medianRent2011: (row.rent || {}).median_rent_2011,
           medianRent2017: (row.rent || {}).median_rent_2017,
           medianRentChange20112017: (row.rent || {}).median_rent_change_2011_2017,
+          raceWhitePercent2016: (row.racial_makeup || {}).percent_white_2016 * 100,
+          raceWhitePercentChange20112016:
+            ((row.racial_makeup || {}).percent_white_2016 - (row.racial_makeup || {}).percent_white_2011) * 100,
           totalBuildings: row.total_buildings,
           totalViolations: row.total_violations,
           totalSales: row.total_sales,
@@ -46,6 +49,9 @@ module.exports = {
         },
         {
           model: db.Rent
+        },
+        {
+          model: db.RacialMakeup
         }
       ]
     }).then(data => {

@@ -19,7 +19,7 @@ def get_value_from_matching_row(tract, value_index, property_attribute, csv_data
     print("  * no match for " + tract["properties"][property_attribute])
 
 def fill_json():
-  income_csv = list(csv.reader(open('data/demographic_data/csv/bk_census_tract_median_income.csv', 'r')))
+  income_csv = list(csv.reader(open('data/income_data/csv/bk_census_tract_median_income.csv', 'r')))
   buildings_csv = list(csv.reader(open('data/buildings_data/csv/bk_new_and_total_buildings_by_census_tract.csv', 'r')))
   
   neighborhood_json = json.load(open("data/boundary_data/geojson/bk_neighborhoods.geojson", 'r'))

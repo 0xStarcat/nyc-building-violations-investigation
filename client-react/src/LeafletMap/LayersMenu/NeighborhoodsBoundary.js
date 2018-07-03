@@ -10,7 +10,16 @@ export default class NeighborhoodsBoundary extends Component {
     return (
       <LayerGroup ref={this.props.neighborhoodLayerGroupRef} onToggle={this.moveToFront}>
         {this.props.store.neighborhoods.features.map((feature, index) => {
-          return <GeoJSON key={`ct-${index}`} data={feature['geometry']} color="red" weight={1} fillOpacity={0} />
+          return (
+            <GeoJSON
+              interactive={false}
+              key={`ct-${index}`}
+              data={feature['geometry']}
+              color="red"
+              weight={1}
+              fillOpacity={0}
+            />
+          )
         })}
       </LayerGroup>
     )

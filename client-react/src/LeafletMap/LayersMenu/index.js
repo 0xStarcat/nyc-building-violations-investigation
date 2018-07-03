@@ -40,13 +40,7 @@ export default class LayersMenu extends Component {
     const rectangle = [[51.49, -0.08], [51.5, -0.06]]
 
     return (
-      <LayersControl
-        autoZIndex={true}
-        sortLayers={true}
-        collapsed={false}
-        ref={this.props.layerControlRef}
-        position={this.props.position}
-      >
+      <LayersControl collapsed={false} ref={this.props.layerControlRef} position={this.props.position}>
         <BaseLayer checked name="Median Income, 2017">
           <LayerGroup>
             {this.props.store.censusTracts.features.map((feature, index) => {
@@ -244,12 +238,14 @@ export default class LayersMenu extends Component {
                   key={`ct-${index}`}
                   data={feature['geometry']}
                   {...permitsTotalLayerStyle(feature.properties.totalPermits, feature.properties.totalBuildings)}
-                />
+                >
+                  <CensusTractPopup feature={feature} />
+                </GeoJSON>
               )
             })}
           </LayerGroup>
         </BaseLayer>
-        <Overlay ref={this.props.neighborhoodOverlayRef} checked name="zNeighborhood Boundaries">
+        <Overlay ref={this.props.neighborhoodOverlayRef} checked name="Neighborhood Boundaries">
           <NeighborhoodsBoundary
             neighborhoodLayerGroupRef={this.props.neighborhoodLayerGroupRef}
             store={this.props.store}

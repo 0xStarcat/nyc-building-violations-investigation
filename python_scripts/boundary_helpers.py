@@ -38,13 +38,13 @@ def process_median_income_data():
     tract_json = json.load(tract_data)
     print("Tract json loaded")
 
-  income_csv = pd.read_csv("data/demographic_data/censustract-medianhouseholdincome2017.csv", sep=',',header=None)  
+  income_csv = pd.read_csv("data/income_data/censustract-medianhouseholdincome2017.csv", sep=',',header=None)  
   for total in income_csv.values:
     total=total[2:5]
     if total[0][:5] == "36047":
       income_data.append(total)
 
-  with open("data/demographic_data/bk_median_income_2017.csv", "w") as new_income_data:
+  with open("data/income_data/bk_median_income_2017.csv", "w") as new_income_data:
     writer = csv.writer(new_income_data)
     writer.writerow(["CT2010", "2010", "2016"])
 
@@ -59,7 +59,7 @@ def add_median_income_to_census_tracts():
     tract_json = json.load(tract_data)
     print("Tract json loaded")
 
-  income_csv = pd.read_csv("data/demographic_data/bk_median_income_2017.csv", sep=',',header=None)  
+  income_csv = pd.read_csv("data/income_data/bk_median_income_2017.csv", sep=',',header=None)  
   for total in income_csv.values:
     income_data.append(total)
 

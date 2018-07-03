@@ -7,7 +7,7 @@ def generate_csv():
   income_data = []
 
   # read income CSV
-  income_csv = list(csv.reader(open("data/demographic_data/bk_median_income_2017.csv")))
+  income_csv = list(csv.reader(open("data/income_data/bk_median_income_2017.csv")))
   income_csv.pop(0)
   print("csv loaded")
 
@@ -19,7 +19,7 @@ def generate_csv():
     return [ct_id, mi_2011, mi_2017, change_2011_2017]
 
   # write CSV
-  with open('data/demographic_data/csv/bk_census_tract_median_income.csv', 'w') as outcsv:
+  with open('data/income_data/csv/bk_census_tract_median_income.csv', 'w') as outcsv:
     print("writing to CSV")
     writer = csv.writer(outcsv)
     writer.writerow(["CT2010", "Median Income 2011", "Median Income 2017", "Change 2011-2017"])

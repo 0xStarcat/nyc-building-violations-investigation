@@ -6,9 +6,9 @@ import './style.scss'
 const SideBar = () => {
   return (
     <div id="sidebar">
-      <AppLink href="about">About</AppLink>
-      <AppLink href="maps">Map</AppLink>
-      <AppLink href="">Charts</AppLink>
+      <AppLink href={`${baseUrl}/about`}>About</AppLink>
+      <AppLink href={`${baseUrl}/`}>Map</AppLink>
+      <AppLink href={`${baseUrl}/charts`}>Charts</AppLink>
     </div>
   )
 }

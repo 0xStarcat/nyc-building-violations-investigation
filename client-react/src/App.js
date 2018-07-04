@@ -22,6 +22,7 @@ class App extends Component {
       return <div>Loading</div>
     return (
       <div className="App">
+        <p>hi</p>
         <Router history={history}>
           <Switch>
             <Route exact path="/maps" render={routeProps => <MapPage store={this.props.store} />} />

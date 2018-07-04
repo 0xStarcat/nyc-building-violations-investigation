@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
 import ScatterPlotWithTooltip from '../Charts/ScatterPlotWithTooltip'
-import SideBar from '../SideBar'
 
 class ChartPage extends Component {
   constructor(props) {

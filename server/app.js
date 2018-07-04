@@ -1,12 +1,9 @@
 var express = require('express')
 var app = express()
-var mustache = require('mustache-express')
 var fs = require('fs')
+var path = require('path')
 
-app.engine('html', mustache())
-app.set('view engine', 'html')
-app.set('views', __dirname + '/client/views')
-app.use('/', express.static(__dirname + '/client/public'))
+app.use(express.static(path.resolve(__dirname, '../build/static')))
 app.use((req, res, next) => {
   res.set({
     Accept: 'application/json',
@@ -14,7 +11,7 @@ app.use((req, res, next) => {
     'Access-Control-Allow-Credentials': true,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
-    'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE'
+    'Access-Control-Allow-Methods': 'GET'
   })
   next()
 })
@@ -23,7 +20,14 @@ const census_tracts = require('./routes/censusTractRoutes')
 
 //Define what happens then a user visits the root route
 app.get('/', function(req, res) {
-  res.render('index') //Tell Express which html file to render for this route
+  res.set({
+    'Content-Type': 'text/html',
+    'Access-Control-Allow-Credentials': true,
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
+    'Access-Control-Allow-Methods': 'GET'
+  })
+  res.sendFile(path.resolve(__dirname, '../build', 'index.html')) //Tell Express which html file to render for this route
 })
 
 app.use('/neighborhoods', neighborhoods)

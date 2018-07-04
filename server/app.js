@@ -3,7 +3,7 @@ var app = express()
 var fs = require('fs')
 var path = require('path')
 
-app.use(express.static(path.resolve(__dirname, '../build/static')))
+app.use(express.static(path.resolve(__dirname, '../build')))
 app.use((req, res, next) => {
   res.set({
     Accept: 'application/json',

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import SideBar from './SideBar'
 import MapPage from './Pages/MapPage'
 import ChartPage from './Pages/ChartPage'
+import AboutPage from './Pages/AboutPage'
 
 import { readCensusTracts } from './Store/CensusTracts/actions'
 import { readNeighborhoods } from './Store/Neighborhoods/actions'
@@ -23,8 +24,9 @@ class App extends Component {
       <div className="App">
         <Router history={history}>
           <Switch>
-            <Route exact path="/" render={routeProps => <MapPage store={this.props.store} />} />
-            <Route exact path="/charts" render={routeProps => <ChartPage store={this.props.store} />} />
+            <Route exact path="/maps" render={routeProps => <MapPage store={this.props.store} />} />
+            <Route exact path="/" render={routeProps => <ChartPage store={this.props.store} />} />
+            <Route exact path="/about" render={routeProps => <AboutPage />} />
           </Switch>
         </Router>
       </div>

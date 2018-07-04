@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import SideBar from '../SideBar'
 
 import ScatterPlotWithTooltip from '../Charts/ScatterPlotWithTooltip'
 

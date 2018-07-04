@@ -7,8 +7,8 @@ const SideBar = () => {
   return (
     <div id="sidebar">
       <AppLink href="about">About</AppLink>
-      <AppLink href="">Map</AppLink>
-      <AppLink href="charts">Charts</AppLink>
+      <AppLink href="maps">Map</AppLink>
+      <AppLink href="">Charts</AppLink>
     </div>
   )
 }

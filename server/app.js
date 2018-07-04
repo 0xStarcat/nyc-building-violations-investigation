@@ -21,9 +21,6 @@ app.use((req, res, next) => {
 const neighborhoods = require('./routes/neighborhoodRoutes')
 const census_tracts = require('./routes/censusTractRoutes')
 
-//Define the port
-var port = 8080
-
 //Define what happens then a user visits the root route
 app.get('/', function(req, res) {
   res.render('index') //Tell Express which html file to render for this route
@@ -55,11 +52,6 @@ app.get('/buildings/:fileName', function(req, res) {
     res.write(content)
     res.end()
   })
-})
-
-//Start the server on the defined port
-app.listen(port, function() {
-  console.log('Server running on port: ' + port)
 })
 
 module.exports = { app }

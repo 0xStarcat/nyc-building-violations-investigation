@@ -23,7 +23,7 @@ export default class LeafletMap extends Component {
   }
 
   bringNeighborhoodsToFront() {
-    neighborhoodLayerGroupRef.current.leafletElement.setZIndex(1000)
+    this.neighborhoodLayerGroupRef.current.leafletElement.setZIndex(1000)
     this.neighborhoodLayerGroupRef.current.leafletElement.eachLayer(layer => {
       if (layer._map) layer.bringToFront()
     })

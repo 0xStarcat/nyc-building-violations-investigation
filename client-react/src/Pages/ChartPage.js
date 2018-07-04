@@ -1,49 +1,36 @@
 import React, { Component } from 'react'
 
-import ScatterPlot from '../Charts/ScatterPlot'
+import ScatterPlotWithTooltip from '../Charts/ScatterPlotWithTooltip'
 import SideBar from '../SideBar'
 
 class ChartPage extends Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      tooltip: {
-        tooltipOpen: false
-      }
-    }
-
-    this.showTooltip = this.showTooltip.bind(this)
-    this.hideTooltip = this.hideTooltip.bind(this)
-  }
-
-  showTooltip(tooltipData) {
-    this.setState({ tooltip: { ...tooltipData, tooltipOpen: true } })
-  }
-
-  hideTooltip() {
-    this.setState({ tooltip: { tooltipOpen: false } })
   }
 
   render() {
     return (
       <div>
         <SideBar />
-        <ScatterPlot
+        <ScatterPlotWithTooltip store={this.props.store} xData="raceWhitePercent2016" yData="medianRent2017" />
+        <ScatterPlotWithTooltip
           store={this.props.store}
-          tooltip={this.state.tooltip}
-          showTooltip={this.showTooltip}
-          hideTooltip={this.hideTooltip}
-          xData="raceWhitePercent2016"
-          yData="medianRent2017"
+          xData="medianIncomeChange20112017"
+          xThreshold={[-40000]}
+          yData="percentServiceCallsWithViolation"
         />
-        <ScatterPlot
+        <ScatterPlotWithTooltip
           store={this.props.store}
-          tooltip={this.state.tooltip}
-          showTooltip={this.showTooltip}
-          hideTooltip={this.hideTooltip}
-          xData="medianRent2017"
-          yData="percentServiceCallsUnresolved"
+          xData="medianIncome2017"
+          yData="violationsPerBuilding"
+          xThreshold={[-40000, 150000]}
+          yThreshold={[null, 80]}
+        />
+        <ScatterPlotWithTooltip
+          store={this.props.store}
+          xData="medianIncome2017"
+          yData="violationsNonCommunityPerBuilding"
+          xThreshold={[-40000, 150000]}
         />
       </div>
     )

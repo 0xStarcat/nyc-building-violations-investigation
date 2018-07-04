@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@vx/axis": "^0.0.168",
+    "@vx/curve": "^0.0.165",
     "@vx/glyph": "^0.0.165",
     "@vx/gradient": "^0.0.165",
     "@vx/group": "^0.0.165",

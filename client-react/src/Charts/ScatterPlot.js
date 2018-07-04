@@ -4,18 +4,48 @@ import { LinearGradient } from '@vx/gradient'
 import { Group } from '@vx/group'
 import { appleStock } from '@vx/mock-data'
 import { GlyphCircle } from '@vx/glyph'
-import { scaleTime, scaleLinear } from '@vx/scale'
+import { scaleLinear } from '@vx/scale'
 import { withTooltip, Tooltip } from '@vx/tooltip'
+import { LinePath } from '@vx/shape'
+import { curveMonotoneX } from '@vx/curve'
 
-import { extent, max } from 'd3-array'
+import { calcLinear } from './utils/statisticalAnalysis'
+import TrendLine from './TrendLine'
+
+import { extent, max, min } from 'd3-array'
+
 const ScatterPlot = props => {
   let tooltipTimeout
 
+  const hasValue = feature => {
+    return !(
+      isNaN(feature.properties[props.xData]) ||
+      feature.properties[props.xData] == 0 ||
+      isNaN(feature.properties[props.yData]) ||
+      feature.properties[props.yData] == 0
+    )
+  }
+
+  const meetsThreshold = feature => {
+    let xLow = true
+    let xHigh = true
+    let yLow = true
+    let yHigh = true
+
+    if (props.xThreshold && props.xThreshold[0]) xLow = feature.properties[props.xData] >= props.xThreshold[0]
+    if (props.xThreshold && props.xThreshold[1]) xHigh = feature.properties[props.xData] <= props.xThreshold[1]
+    if (props.yThreshold && props.yThreshold[0]) yLow = feature.properties[props.yData] <= props.yThreshold[1]
+    if (props.yThreshold && props.yThreshold[1]) yLow = feature.properties[props.yData] <= props.yThreshold[1]
+
+    return xLow && xHigh && yLow && yHigh
+  }
+
   const data = props.store.censusTracts.features.filter(feature => {
-    return feature.properties[props.xData] && feature.properties[props.yData]
+    return hasValue(feature) && meetsThreshold(feature)
   })
-  const width = 1200
-  const height = 500
+
+  const width = 1000
+  const height = 400
   const margin = {
     top: 60,
     bottom: 60,
@@ -26,10 +56,12 @@ const ScatterPlot = props => {
   const yMax = height - margin.top - margin.bottom
 
   const x = d => {
+    if (!d.properties) return
     return parseFloat(d.properties[props.xData])
   }
 
   const y = d => {
+    if (!d.properties) return
     return parseFloat(d.properties[props.yData])
   }
 
@@ -43,14 +75,16 @@ const ScatterPlot = props => {
     domain: [0, max(data, y)]
   })
 
-  console.log(xMax)
+  const regressionCalculation = calcLinear(data, props.xData, props.yData, min(data, x), min(data, y))
   return (
     <div>
       <svg width={width} height={height}>
         <Group top={margin.top} left={margin.left}>
           <AxisLeft scale={yScale} top={0} left={0} label={props.yData} stroke={'#1b1a1e'} tickTextFill={'#1b1a1e'} />
           <AxisBottom scale={xScale} top={yMax} label={props.xData} stroke={'#1b1a1e'} tickTextFill={'#1b1a1e'} />
-
+          {regressionCalculation[0].properties[props.xData] && (
+            <TrendLine data={regressionCalculation} xMax={xMax} yMax={yMax} x={x} y={y} stroke="red" strokeWidth={1} />
+          )}
           {data.map((point, i) => {
             return (
               <GlyphCircle
@@ -62,9 +96,10 @@ const ScatterPlot = props => {
                 size={20}
                 onMouseEnter={() => event => {
                   if (tooltipTimeout) clearTimeout(tooltipTimeout)
+                  const rect = event.target.getBoundingClientRect()
                   props.showTooltip({
-                    tooltipLeft: xScale(x(point)) + 200,
-                    tooltipTop: yScale(y(point)) + 20,
+                    tooltipLeft: rect.left + window.pageXOffset - 100,
+                    tooltipTop: rect.top + window.pageYOffset + 50,
                     tooltipData: point
                   })
                 }}

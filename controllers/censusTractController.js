@@ -2,7 +2,7 @@ const { db } = require('../models/sequelize.js')
 
 const constructCensusTractJson = data => {
   return {
-    features: data.map(row => {
+    features: data.filter(row => row.total_buildings > 55).map(row => {
       return {
         type: 'Feature',
         geometry: JSON.parse(row['geometry']),
@@ -38,7 +38,11 @@ const constructCensusTractJson = data => {
           totalSalesPriorViolations: row.total_sales_prior_violations,
           avgSalesPriorViolations: ((row.total_sales_prior_violations / row.total_sales) * 100).toFixed(2),
           avgViolationCount3YearsBeforeSale: row.avg_violation_count_3years_before_sale,
-          violationsPerBuilding: (row.total_violations / row.total_buildings).toFixed(2)
+          violationsPerBuilding: (row.total_violations / row.total_buildings).toFixed(2),
+          violationsNonCommunityPerBuilding: (
+            (row.total_violations - row.total_service_calls_with_violation_result) /
+            row.total_buildings
+          ).toFixed(2)
         }
       }
     })

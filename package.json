@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "NYC Data Investigation",
   "main": "server/nyc_data_server.js",
+  "homepage": "https://starcat.xyz/top-secret/nyc-data",
   "scripts": {
     "webpack": "webpack --watch --mode=development",
     "nodemon": "nodemon server/nyc_data_server.js",

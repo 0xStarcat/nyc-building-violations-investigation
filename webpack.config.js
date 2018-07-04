@@ -1,15 +1,10 @@
 module.exports = {
-  entry: './client-react/src/app.js',
+  entry: './nyc_data_server.js',
   output: {
-    path: __dirname + '/client-react/public/dist',
-    filename: 'bundle.js'
+    path: __dirname + '/build',
+    filename: 'nyc_data_server.js'
   },
   module: {
-    rules: [
-      {
-        test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
-      }
-    ]
+    rules: []
   }
 }

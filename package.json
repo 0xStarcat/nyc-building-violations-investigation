@@ -10,7 +10,7 @@
     "dev": "nodemon server/nyc_data_server.js | node scripts/start.js --development",
     "start": "pm2 start server/nyc_data_server.js",
     "build": "node scripts/build.js",
-    "babel_server": "babel ./server/nyc_data_server.js --out-dir build"
+    "babel_server": "babel server --out-dir build/server"
   },
   "author": "",
   "license": "ISC",

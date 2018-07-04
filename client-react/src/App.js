@@ -19,6 +19,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(`${this.baseUrl}/`)
     if (!(this.props.store.censusTracts.initialFetchCompleted || this.props.store.neighborhoods.initialFetchCompleted))
       return <div>Loading</div>
     return (

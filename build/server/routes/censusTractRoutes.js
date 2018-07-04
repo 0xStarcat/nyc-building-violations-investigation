@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-var CensusTractController = require('../controllers/CensusTractController');
+var CensusTractController = require(__dirname + '/../controllers/censusTractController');
 
 router.get('/', CensusTractController.index);
 module.exports = router;

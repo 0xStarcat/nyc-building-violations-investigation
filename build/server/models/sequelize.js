@@ -21,17 +21,17 @@ var db = {
   sequelize: sequelize
 };
 
-db.RacialMakeup = sequelize.import('./RacialMakeup.js');
-db.Neighborhood = sequelize.import('./Neighborhood.js');
-db.CensusTract = sequelize.import('./CensusTract.js');
-db.Income = sequelize.import('./Income.js');
-db.Rent = sequelize.import('./Rent.js');
-db.Building = sequelize.import('./Building.js');
-db.Violation = sequelize.import('./Violation.js');
-db.Sale = sequelize.import('./Sale.js');
-db.Permit = sequelize.import('./Permit.js');
-db.ServiceCall = sequelize.import('./ServiceCall.js');
-db.BuildingEvent = sequelize.import('./BuildingEvent.js');
+db.RacialMakeup = sequelize.import(__dirname + '/RacialMakeup.js');
+db.Neighborhood = sequelize.import(__dirname + '/Neighborhood.js');
+db.CensusTract = sequelize.import(__dirname + '/CensusTract.js');
+db.Income = sequelize.import(__dirname + '/Income.js');
+db.Rent = sequelize.import(__dirname + '/Rent.js');
+db.Building = sequelize.import(__dirname + '/Building.js');
+db.Violation = sequelize.import(__dirname + '/Violation.js');
+db.Sale = sequelize.import(__dirname + '/Sale.js');
+db.Permit = sequelize.import(__dirname + '/Permit.js');
+db.ServiceCall = sequelize.import(__dirname + '/ServiceCall.js');
+db.BuildingEvent = sequelize.import(__dirname + '/BuildingEvent.js');
 
 // http://docs.sequelizejs.com/manual/tutorial/associations.html
 db.BuildingEvent.prototype.getItem = function (options) {

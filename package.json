@@ -5,11 +5,12 @@
   "main": "nyc_data_server.js",
   "scripts": {
     "webpack": "webpack --watch --mode=development",
-    "nodemon": "nodemon nyc_data_server.js",
+    "nodemon": "nodemon server/nyc_data_server.js",
     "test": "node scripts/test.js --env=jsdom",
-    "dev": "nodemon nyc_data_server.js | node scripts/start.js --development",
-    "start": "pm2 start nyc_data_server.js",
-    "build": "node scripts/build.js"
+    "dev": "nodemon server/nyc_data_server.js | node scripts/start.js --development",
+    "start": "pm2 start server/nyc_data_server.js",
+    "build": "node scripts/build.js",
+    "babel_server": "babel ./server/nyc_data_server.js --out-dir build"
   },
   "author": "",
   "license": "ISC",
@@ -75,18 +76,15 @@
     "sass-loader": "^7.0.3",
     "sequelize": "^4.38.0",
     "sqlite3": "^4.0.1",
-    "style-loader": "0.19.0",
+    "style-loader": "^0.21.0",
     "sw-precache-webpack-plugin": "0.11.4",
     "url-loader": "0.6.2",
-    "webpack": "3.8.1",
     "webpack-dev-server": "2.9.4",
     "webpack-manifest-plugin": "1.3.2",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
-    "css-loader": "^0.28.11",
     "eslint": "^4.10.0",
-    "style-loader": "^0.21.0",
     "webpack": "^4.12.0",
     "webpack-cli": "^3.0.8"
   },

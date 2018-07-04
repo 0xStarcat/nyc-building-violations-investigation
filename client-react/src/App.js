@@ -26,9 +26,13 @@ class App extends Component {
         <p>hi</p>
         <Router history={history}>
           <Switch>
-            <Route exact path={`${baseUrl}/`} render={routeProps => <MapPage store={this.props.store} />} />
-            <Route exact path={`${baseUrl}/charts`} render={routeProps => <ChartPage store={this.props.store} />} />
-            <Route exact path={`${baseUrl}/about`} render={routeProps => <AboutPage />} />
+            <Route exact path={`${this.baseUrl}/`} render={routeProps => <MapPage store={this.props.store} />} />
+            <Route
+              exact
+              path={`${this.baseUrl}/charts`}
+              render={routeProps => <ChartPage store={this.props.store} />}
+            />
+            <Route exact path={`${this.baseUrl}/about`} render={routeProps => <AboutPage />} />
           </Switch>
         </Router>
       </div>

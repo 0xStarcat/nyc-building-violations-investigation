@@ -1,7 +1,7 @@
 {
   "name": "map_test",
   "version": "1.0.0",
-  "description": "",
+  "description": "NYC Data Investigation",
   "main": "nyc_data_server.js",
   "scripts": {
     "webpack": "webpack --watch --mode=development",

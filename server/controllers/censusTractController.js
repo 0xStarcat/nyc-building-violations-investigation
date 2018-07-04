@@ -1,4 +1,4 @@
-const { db } = require('../models/sequelize.js')
+const { db } = require(__dirname + '/../models/sequelize.js')
 
 const constructCensusTractJson = data => {
   return {

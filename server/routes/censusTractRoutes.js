@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const CensusTractController = require('../controllers/CensusTractController')
+const CensusTractController = require(__dirname + '/../controllers/CensusTractController')
 
 router.get('/', CensusTractController.index)
 module.exports = router

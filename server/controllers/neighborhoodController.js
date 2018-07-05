@@ -1,6 +1,6 @@
 const { db } = require(__dirname + '/../models/sequelize.js')
 
-const constructCensusTractJson = data => {
+const constructNeighborhoodJSON = data => {
   return {
     features: data.map(row => {
       return {
@@ -17,7 +17,7 @@ const constructCensusTractJson = data => {
 module.exports = {
   index: async (req, res) => {
     db.Neighborhood.findAll().then(data => {
-      res.json(constructCensusTractJson(data))
+      res.json(constructNeighborhoodJSON(data))
     })
   }
 }

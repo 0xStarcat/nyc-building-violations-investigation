@@ -21,8 +21,8 @@ export const calcLinear = (data, x, y, minX, minY) => {
   let pts = []
   data.forEach(function(d, i) {
     let obj = {}
-    obj.x = parseFloat(d.properties[x])
-    obj.y = parseFloat(d.properties[y])
+    obj.x = parseFloat(d.x)
+    obj.y = parseFloat(d.y)
     obj.mult = parseFloat(obj.x * obj.y)
     pts.push(obj)
   })
@@ -69,8 +69,5 @@ export const calcLinear = (data, x, y, minX, minY) => {
 
   // return an object of two points
   // each point is an object with an x and y coordinate
-  return [
-    { properties: { [x]: minX, [y]: m * minX + bIntercept } },
-    { properties: { [x]: (minY - bIntercept) / m, [y]: minY } }
-  ]
+  return [{ x: minX, y: m * minX + bIntercept }, { x: (minY - bIntercept) / m, y: minY }]
 }

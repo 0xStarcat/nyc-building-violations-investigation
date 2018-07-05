@@ -14,9 +14,35 @@ import TrendLine from './TrendLine'
 
 import { extent, max, min } from 'd3-array'
 
-const ScatterPlot = props => {
-  if (!props.data) return null
+const ScatterPlotBandScale = props => {
   let tooltipTimeout
+
+  const hasValue = feature => {
+    return !(
+      isNaN(feature.properties[props.xData]) ||
+      feature.properties[props.xData] == 0 ||
+      isNaN(feature.properties[props.yData]) ||
+      feature.properties[props.yData] == 0
+    )
+  }
+
+  const meetsThreshold = feature => {
+    let xLow = true
+    let xHigh = true
+    let yLow = true
+    let yHigh = true
+
+    if (props.xThreshold && props.xThreshold[0]) xLow = feature.properties[props.xData] >= props.xThreshold[0]
+    if (props.xThreshold && props.xThreshold[1]) xHigh = feature.properties[props.xData] <= props.xThreshold[1]
+    if (props.yThreshold && props.yThreshold[0]) yLow = feature.properties[props.yData] <= props.yThreshold[1]
+    if (props.yThreshold && props.yThreshold[1]) yLow = feature.properties[props.yData] <= props.yThreshold[1]
+
+    return xLow && xHigh && yLow && yHigh
+  }
+
+  const data = props.store.censusTracts.features.filter(feature => {
+    return meetsThreshold(feature)
+  })
 
   const width = 1000
   const height = 400
@@ -30,43 +56,48 @@ const ScatterPlot = props => {
   const yMax = height - margin.top - margin.bottom
 
   const x = d => {
-    if (!d) return
-    return d.x
+    if (!d.properties) return
+    return d.properties[props.xData]
   }
 
   const y = d => {
-    if (!d) return
-    return d.y
+    if (!d.properties) return
+    return d.properties[props.yData]
   }
+
+  const xBandScale = scaleBand({
+    rangeRound: [0, xMax],
+    domain: data.map(x),
+    padding: 0.2
+  })
 
   const xScale = scaleLinear({
     range: [0, xMax],
-    domain: extent(props.data, x)
+    domain: extent(data, x)
   })
 
   const yScale = scaleLinear({
     range: [yMax, 0],
-    domain: [0, max(props.data, y)]
+    domain: [0, max(data, y)]
   })
 
-  const regressionCalculation = calcLinear(props.data, props.xData, props.yData, min(props.data, x), min(props.data, y))
+  const regressionCalculation = calcLinear(data, props.xData, props.yData, min(data, x), min(data, y))
   return (
     <div>
-      <h3 className="graph-title">{props.title}</h3>
       <svg width={width} height={height}>
         <Group top={margin.top} left={margin.left}>
           <AxisLeft scale={yScale} top={0} left={0} label={props.yData} stroke={'#1b1a1e'} tickTextFill={'#1b1a1e'} />
-          <AxisBottom scale={xScale} top={yMax} label={props.xData} stroke={'#1b1a1e'} tickTextFill={'#1b1a1e'} />
-          {regressionCalculation[0].x && (
+          <AxisBottom scale={xBandScale} top={yMax} label={props.xData} stroke={'#1b1a1e'} tickTextFill={'#1b1a1e'} />
+          {regressionCalculation[0].properties[props.xData] && (
             <TrendLine data={regressionCalculation} xMax={xMax} yMax={yMax} x={x} y={y} stroke="red" strokeWidth={1} />
           )}
-          {props.data.map((point, i) => {
+          {data.map((point, i) => {
             return (
               <GlyphCircle
                 className="dot"
                 key={`point-${point.properties.name}-${i}`}
                 fill={'#f6c431'}
-                left={xScale(x(point))}
+                left={xBandScale(x(point))}
                 top={yScale(y(point))}
                 size={20}
                 onMouseEnter={() => event => {
@@ -97,10 +128,10 @@ const ScatterPlot = props => {
             <strong>Neighborhood:</strong> {props.tooltip.tooltipData.properties.neighborhood}
           </div>
           <div>
-            <strong>{props.xData}:</strong> {props.tooltip.tooltipData.x}
+            <strong>{props.xData}:</strong> {props.tooltip.tooltipData.properties[props.xData]}
           </div>
           <div>
-            <strong>{props.yData}:</strong> {props.tooltip.tooltipData.y}
+            <strong>{props.yData}:</strong> {props.tooltip.tooltipData.properties[props.yData]}
           </div>
         </Tooltip>
       )}
@@ -108,4 +139,4 @@ const ScatterPlot = props => {
   )
 }
 
-export default ScatterPlot
+export default ScatterPlotBandScale

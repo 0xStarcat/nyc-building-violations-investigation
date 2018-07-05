@@ -15,7 +15,7 @@ const AboutPage = () => {
           of the winter.
         </p>
         <p>
-          The building is owned by Hasidic Jewish business and the first floor is a bread factory. The rent is
+          The building is owned by a Hasidic Jewish business and the first floor is a bread factory. The rent is
           $1000/month compared to the median rent of $1965.74 for the rest of my block-area.
         </p>
         <p>
@@ -38,8 +38,8 @@ const AboutPage = () => {
           $1000.20 compared to my area's $1965.74.
         </p>
         <p>
-          But maybe it's time has come? I had to wonder if the NYC Department of Buildings could have any role in
-          assisting the gentrification of neigbhorhoods in Brooklyn. I had to wonder how often this story could have
+          But maybe its time has come? I had to wonder if the NYC Department of Buildings could have any role in
+          assisting the gentrification of neighborhoods in Brooklyn. I had to wonder how often this story could have
           played out in other parts of my borough.
         </p>
         <p>

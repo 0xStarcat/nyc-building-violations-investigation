@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ScatterPlot from './ScatterPlot'
 
+import './style.scss'
+
 class ScatterPlotWithTooltip extends Component {
   constructor(props) {
     super(props)
@@ -25,7 +27,8 @@ class ScatterPlotWithTooltip extends Component {
   render() {
     return (
       <ScatterPlot
-        store={this.props.store}
+        data={this.props.data}
+        title={this.props.title}
         tooltip={this.state.tooltip}
         showTooltip={this.showTooltip}
         hideTooltip={this.hideTooltip}

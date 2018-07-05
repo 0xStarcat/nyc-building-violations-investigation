@@ -11,6 +11,8 @@ import { readNeighborhoods } from './Store/Neighborhoods/actions'
 import { history } from './Store/store'
 import { Router, Switch, Route } from 'react-router'
 
+import './App.scss'
+
 class App extends Component {
   componentWillMount() {
     this.props.dispatch(readCensusTracts())
@@ -19,12 +21,10 @@ class App extends Component {
   }
 
   render() {
-    console.log(`${this.baseUrl}/`)
     if (!(this.props.store.censusTracts.initialFetchCompleted || this.props.store.neighborhoods.initialFetchCompleted))
       return <div>Loading</div>
     return (
       <div className="App">
-        <p>hi</p>
         <Router history={history}>
           <Switch>
             <Route exact path={`${this.baseUrl}/`} render={routeProps => <MapPage store={this.props.store} />} />

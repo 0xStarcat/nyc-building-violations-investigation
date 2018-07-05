@@ -4,15 +4,16 @@ import { LinearGradient } from '@vx/gradient'
 import { Group } from '@vx/group'
 import { appleStock } from '@vx/mock-data'
 import { GlyphCircle } from '@vx/glyph'
-import { scaleLinear, scaleBand } from '@vx/scale'
+import { scaleLinear, scaleThreshold } from '@vx/scale'
 import { withTooltip, Tooltip } from '@vx/tooltip'
 import { LinePath } from '@vx/shape'
 import { curveMonotoneX } from '@vx/curve'
+import { Legend } from '@vx/legend'
+import { extent, max, min } from 'd3-array'
 
 import { calcLinear } from './utils/statisticalAnalysis'
 import TrendLine from './TrendLine'
-
-import { extent, max, min } from 'd3-array'
+import { TooltipContext } from './context/TooltipContext'
 
 const ScatterPlot = props => {
   if (!props.data) return null
@@ -49,6 +50,11 @@ const ScatterPlot = props => {
     domain: [0, max(props.data, y)]
   })
 
+  const legendThreshold = scaleThreshold({
+    range: [0, 100],
+    domain: [0, 1]
+  })
+
   const regressionCalculation = calcLinear(props.data, props.xData, props.yData, min(props.data, x), min(props.data, y))
   return (
     <div>
@@ -75,7 +81,12 @@ const ScatterPlot = props => {
                   props.showTooltip({
                     tooltipLeft: rect.left + window.pageXOffset - 100,
                     tooltipTop: rect.top + window.pageYOffset + 50,
-                    tooltipData: point
+                    tooltipData: {
+                      name: point.properties.name,
+                      neighborhood: point.properties.neighborhood,
+                      [props.xData]: point.properties[props.xData],
+                      [props.yData]: point.properties[props.yData]
+                    }
                   })
                 }}
                 onMouseLeave={() => event => {
@@ -88,22 +99,25 @@ const ScatterPlot = props => {
           })}
         </Group>
       </svg>
-      {props.tooltip.tooltipOpen && (
-        <Tooltip left={props.tooltip.tooltipLeft} top={props.tooltip.tooltipTop}>
-          <div>
-            <strong>Census Tract:</strong> {props.tooltip.tooltipData.properties.name}
-          </div>
-          <div>
-            <strong>Neighborhood:</strong> {props.tooltip.tooltipData.properties.neighborhood}
-          </div>
-          <div>
-            <strong>{props.xData}:</strong> {props.tooltip.tooltipData.x}
-          </div>
-          <div>
-            <strong>{props.yData}:</strong> {props.tooltip.tooltipData.y}
-          </div>
-        </Tooltip>
-      )}
+      <Legend scale={legendThreshold} labelMargin="0 0 0 200px" />
+      <TooltipContext.Consumer>
+        {tooltip =>
+          tooltip.tooltipOpen && (
+            <Tooltip left={tooltip.tooltipLeft} top={tooltip.tooltipTop}>
+              {Object.keys(tooltip.tooltipData).map((key, index) => {
+                return (
+                  <div key={`${key}-${index}`}>
+                    <div>
+                      <strong>{key}: </strong>
+                      {tooltip.tooltipData[key]}
+                    </div>
+                  </div>
+                )
+              })}
+            </Tooltip>
+          )
+        }
+      </TooltipContext.Consumer>
     </div>
   )
 }

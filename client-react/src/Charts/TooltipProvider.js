@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import ScatterPlot from './ScatterPlot'
-
+import { TooltipContext } from './context/TooltipContext'
 import './style.scss'
 
-class ScatterPlotWithTooltip extends Component {
+class TooltipProvider extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -25,20 +25,12 @@ class ScatterPlotWithTooltip extends Component {
   }
 
   render() {
-    return (
-      <ScatterPlot
-        data={this.props.data}
-        title={this.props.title}
-        tooltip={this.state.tooltip}
-        showTooltip={this.showTooltip}
-        hideTooltip={this.hideTooltip}
-        xData={this.props.xData}
-        yData={this.props.yData}
-        xThreshold={this.props.xThreshold}
-        yThreshold={this.props.yThreshold}
-      />
+    const childrenWithProps = React.Children.map(this.props.children, child =>
+      React.cloneElement(child, { showTooltip: this.showTooltip, hideTooltip: this.hideTooltip })
     )
+
+    return <TooltipContext.Provider value={this.state.tooltip}>{childrenWithProps}</TooltipContext.Provider>
   }
 }
 
-export default ScatterPlotWithTooltip
+export default TooltipProvider

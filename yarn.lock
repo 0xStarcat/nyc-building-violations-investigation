@@ -69,6 +69,14 @@
   dependencies:
     classnames "^2.2.5"
 
+"@vx/legend@^0.0.167":
+  version "0.0.167"
+  resolved "https://registry.yarnpkg.com/@vx/legend/-/legend-0.0.167.tgz#71875afa1d2750608bb5ebe9963bffa86950214a"
+  dependencies:
+    "@vx/group" "0.0.165"
+    classnames "^2.2.5"
+    prop-types "^15.5.10"
+
 "@vx/mock-data@^0.0.165":
   version "0.0.165"
   resolved "https://registry.yarnpkg.com/@vx/mock-data/-/mock-data-0.0.165.tgz#be65485a901f5601f23c97158884372d84030383"

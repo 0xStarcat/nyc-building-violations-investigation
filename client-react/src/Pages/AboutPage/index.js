@@ -1,12 +1,11 @@
 import React from 'react'
-import SideBar from '../../SideBar'
+import Layout from '../Layout'
 
 import './style.scss'
 
 const AboutPage = () => {
   return (
-    <div>
-      <SideBar />
+    <Layout>
       <div className="text-container">
         <h3>Background Story</h3>
         <p>
@@ -65,7 +64,7 @@ const AboutPage = () => {
           story.
         </p>
       </div>
-    </div>
+    </Layout>
   )
 }
 

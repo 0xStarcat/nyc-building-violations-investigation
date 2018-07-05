@@ -15,8 +15,8 @@ const AboutPage = () => {
           of the winter.
         </p>
         <p>
-          The building is owned by Hasidic Jewish people and the first floor is a bread factory. The rent is $1000/month
-          compared to the median rent of $1965.74 for the rest of my block-area.
+          The building is owned by Hasidic Jewish business and the first floor is a bread factory. The rent is
+          $1000/month compared to the median rent of $1965.74 for the rest of my block-area.
         </p>
         <p>
           One of the requirements of the violation was that the owners needed to install a sprinkler system in the

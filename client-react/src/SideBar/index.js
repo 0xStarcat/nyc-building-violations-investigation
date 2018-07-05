@@ -8,9 +8,9 @@ const SideBar = () => {
 
   return (
     <div id="sidebar">
-      <AppLink href={`${baseUrl}/about`}>About</AppLink>
       <AppLink href={`${baseUrl}/`}>Map</AppLink>
       <AppLink href={`${baseUrl}/charts`}>Charts</AppLink>
+      <AppLink href={`${baseUrl}/about`}>About</AppLink>
     </div>
   )
 }
